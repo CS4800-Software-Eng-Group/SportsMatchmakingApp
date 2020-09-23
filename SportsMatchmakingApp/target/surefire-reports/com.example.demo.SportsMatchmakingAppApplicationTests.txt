@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: com.example.demo.SportsMatchmakingAppApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.683 s <<< FAILURE! - in com.example.demo.SportsMatchmakingAppApplicationTests
+com.example.demo.SportsMatchmakingAppApplicationTests  Time elapsed: 0.682 s  <<< ERROR!
+java.lang.IllegalStateException: Found multiple @SpringBootConfiguration annotated classes [Generic bean: class [com.example.demo.HellowWorldTest]; scope=; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [D:\Documents\School\Fall 2020\CS 4800 Software Engineering\4800 Project Repo\SportsMatchmakingApp\SportsMatchmakingApp\target\classes\com\example\demo\HellowWorldTest.class], Generic bean: class [com.example.demo.SportsMatchmakingAppApplication]; scope=; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [D:\Documents\School\Fall 2020\CS 4800 Software Engineering\4800 Project Repo\SportsMatchmakingApp\SportsMatchmakingApp\target\classes\com\example\demo\SportsMatchmakingAppApplication.class]]
+
