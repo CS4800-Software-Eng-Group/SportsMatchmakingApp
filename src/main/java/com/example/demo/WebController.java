@@ -1,12 +1,13 @@
 package com.example.demo;
 
-import org.springframework.boot.WebController;
-import org.springframework.boot.WebController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+//Fixed the syntax of the file
 @Controller
-public class MyWebController {
+public class WebController {
     @RequestMapping("My")
-    public static void main(String[] args) {
+    public String My(){
         System.out.println("new");
         return "my.jsp";
     }

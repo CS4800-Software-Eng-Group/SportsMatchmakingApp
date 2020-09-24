@@ -72,11 +72,20 @@
 		    <artifactId>tomcat-jasper</artifactId>
 		    <version>9.0.38</version>
 		</dependency>
-		
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
 		<dependency>
-			<groupId>org.apache.commonsmath</groupId>
-			<artifactId>commonsmath</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.intellij/annotations pushed by Nelson Scott-->
+		<dependency>
+			<groupId>com.intellij</groupId>
+			<artifactId>annotations</artifactId>
+			<version>12.0</version>
+		</dependency>
+
 	</dependencies>
 </project>

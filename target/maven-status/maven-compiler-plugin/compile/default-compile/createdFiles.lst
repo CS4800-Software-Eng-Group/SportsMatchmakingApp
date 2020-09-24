@@ -1,6 +1,9 @@
 com\example\demo\HelloWorld\APIHelloWorld.class
 com\example\demo\SportsMatchmakingAppApplication.class
+com\example\demo\HomeController.class
 com\example\demo\HelloWorld\Assignment4NathanMcCausland.class
+com\example\demo\WebController.class
+com\example\demo\HelloWorld\GuavaMethodAlexNeoh.class
 com\example\demo\HelloWorld\HelloWorld.class
 com\example\demo\HelloWorld\HellowWorldTest.class
 com\example\demo\HelloWorld\wbAPI.class
