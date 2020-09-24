@@ -1,0 +1,14 @@
+
+<%@ page language="java" contentType="text/html"
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Lilit's Test Page</title>
+</head>
+<body>
+My web
+</body>
+</html>
+
