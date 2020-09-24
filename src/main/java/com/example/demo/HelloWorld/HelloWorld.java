@@ -9,6 +9,7 @@ public class HelloWorld {
 	
 	@RequestMapping(value="/helloWorld", method= RequestMethod.GET )
 	public String hello() {
+		
 		return "Hello World";
 	}
 }
