@@ -65,5 +65,11 @@
 		    <artifactId>tomcat-jasper</artifactId>
 		    <version>9.0.38</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commonsmath</groupId>
+			<artifactId>commonsmath</artifactId>
+			<version>3.6.1</version>
+		</dependency>
 	</dependencies>
 </project>
