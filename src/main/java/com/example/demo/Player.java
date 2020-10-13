@@ -32,11 +32,34 @@ public class Player {
 	 */
 	//private int zipCode;
 	
+	
+	
 	/**
 	 * @return the Player's unique ID
 	 */
 	public int getpID() {
 		return pID;
+	}
+
+	public Player() {
+		super();
+		this.pID = 100;
+		this.fName = "FirstName";
+		this.sport = "Sport";
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param pID
+	 * @param fName
+	 * @param sport
+	 */
+	public Player(int pID, String fName, String sport) {
+		super();
+		this.pID = pID;
+		this.fName = fName;
+		this.sport = sport;
 	}
 
 	/**
@@ -104,8 +127,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [pID=" + pID + ", fName=" + fName + ", sport=" + sport + ", age=" + ", zipCode="
-				+ "]";
+		return "Player [pID=" + pID + ", fName=" + fName + ", sport=" + sport + "]";
 	}
 
 }
