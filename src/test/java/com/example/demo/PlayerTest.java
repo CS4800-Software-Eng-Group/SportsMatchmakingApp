@@ -19,4 +19,11 @@ public class PlayerTest {
 		String result = p.toString();
 		Assertions.assertEquals("Player [pID=" + 100 + ", fName=" + "William" + ", sport=" + "Soccer" + "]", result);
 	}
+
+	@Test
+	public void testSetSport()
+	{
+		p.setSport("Soccer");
+		Assertions.assertEquals("Soccer", p.getSport());
+	}
 }
