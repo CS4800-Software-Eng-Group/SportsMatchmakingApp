@@ -14,20 +14,20 @@ public class PlayerController {
 	@RequestMapping("/")
 	public String home(Player player)
 	{
-		return "playerHome.html";
+		return "playerHome.jsp";
 	}
 	
 	@RequestMapping("/addPlayer")
 	public String addPlayer(Player player)
 	{
 		repo.save(player);
-		return "playerHome.html";
+		return "playerHome.jsp";
 	}
 	
 	@RequestMapping("/getPlayer")
 	public ModelAndView getPlayer(@RequestParam int pID)
 	{
-		ModelAndView mv = new ModelAndView("showPlayer.html");
+		ModelAndView mv = new ModelAndView("showPlayer.jsp");
 		Player player = repo.findById(pID).orElse(new Player());
 		mv.addObject(player);
 		return mv;
