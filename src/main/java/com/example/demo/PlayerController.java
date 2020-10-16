@@ -9,10 +9,24 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PlayerController {
 	@Autowired
-	PlayerRepo repo;	
+	PlayerRepo repo;
 	
 	@RequestMapping("/")
-	public String home(Player player)
+	public String login()
+	{
+		return "login.jsp";
+	}
+	
+	
+	@RequestMapping("/home")
+	public String home()
+	{
+		return "home.jsp";
+	}
+	
+	
+	@RequestMapping("/playerHome")
+	public String playerHome(Player player)
 	{
 		return "playerHome.jsp";
 	}
