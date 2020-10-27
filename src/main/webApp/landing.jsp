@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +31,7 @@
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
       <a class="navbar-brand" href="#">Sports Matchmaking App</a>
-      <a class="btn btn-primary" href="#">Sign In</a>
+      <a class="btn btn-primary" href="/login">Sign In</a>
     </div>
   </nav>
 
@@ -45,7 +47,7 @@
           <form>
             <div class="form-row">
               <div class="col-md-12">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
+                <button type="submit" class="btn btn-block btn-lg btn-primary" href="/register">Sign up!</button>
               </div>
             </div>
           </form>
@@ -159,7 +161,7 @@
           <form>
             <div class="form-row">
               <div class="col-md-12">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
+                <button type="submit" class="btn btn-block btn-lg btn-primary" href="/register">Sign up!</button>
               </div>
             </div>
           </form>

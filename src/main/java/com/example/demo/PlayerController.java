@@ -11,7 +11,7 @@ public class PlayerController {
 	@Autowired
 	PlayerRepo repo;
 	
-	@RequestMapping("/")
+	@RequestMapping("/login")
 	public String login()
 	{
 		return "login.jsp";
@@ -22,6 +22,12 @@ public class PlayerController {
 	public String home()
 	{
 		return "home.jsp";
+	}
+	
+	@RequestMapping("/")
+	public String landing()
+	{
+		return "landing.jsp";
 	}
 	
 	
