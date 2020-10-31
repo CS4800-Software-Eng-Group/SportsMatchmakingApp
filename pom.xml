@@ -69,7 +69,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>spring-boot-sport-exe</finalName>
 	</build>
 
 </project>
