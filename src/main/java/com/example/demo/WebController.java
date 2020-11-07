@@ -1,14 +1,23 @@
 package com.example.demo;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
-//Fixed the syntax of the file
 @Controller
 public class WebController {
-    @RequestMapping("My")
-    public String My(){
-        System.out.println("new");
-        return "my.jsp";
-    }
+	
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+	
+	@GetMapping("/home")
+	public String home() {
+		return "home";
+	}
+	
+	@GetMapping("/")
+	public String landing() {
+		return "landing";
+	}
 }
