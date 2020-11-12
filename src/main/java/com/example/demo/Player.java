@@ -30,7 +30,7 @@ public class Player {
 	/**
 	 * ZIP code where the Player is located
 	 */
-	//private int zipCode;
+	private String zipCode;
 	
 	
 	
@@ -55,11 +55,12 @@ public class Player {
 	 * @param fName
 	 * @param sport
 	 */
-	public Player(int pID, String fName, String sport) {
+	public Player(int pID, String fName, String sport, String zip) {
 		super();
 		this.pID = pID;
 		this.fName = fName;
 		this.sport = sport;
+		this.zipCode = zip;
 	}
 
 	/**
@@ -114,16 +115,16 @@ public class Player {
 	/**
 	 * @return the zipCode
 	 */
-	/*public int getZipCode() {
+	public String getZipCode() {
 		return zipCode;
-	}*/
-
+	}
+	
 	/**
 	 * @param zipCode the Player's zipCode to be set
 	 */
-	/*public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
-	}*/
+	}
 
 	@Override
 	public String toString() {
