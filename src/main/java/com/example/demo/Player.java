@@ -2,10 +2,11 @@ package com.example.demo;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Player {
-
+	
 	@Id
 	/**
 	 * Player's unique ID	
@@ -16,7 +17,24 @@ public class Player {
 	 * Player's first name
 	 */
 	private String fName;
+	
+	/**
+	 * Player's password
+	 */
+	private String username;
+	
+	@Transient
+	/**
+	 * Player's password
+	 */
+	private String password;
+	
+	/**
+	 * Player's password
+	 */
+	private String login;
 
+	@Transient
 	/**
 	 * Sport that the Player wants to play
 	 */
@@ -33,27 +51,22 @@ public class Player {
 	private String zipCode;
 	
 	
-	
 	/**
-	 * @return the Player's unique ID
+	 * @return the username
 	 */
-	public int getpID() {
-		return pID;
+	public String getUsername() {
+		return username;
 	}
 
-	public Player() {
-		super();
-		this.pID = 100;
-		this.fName = "FirstName";
-		this.sport = "Sport";
-	}
-	
 	/**
-	 * 
-	 * 
-	 * @param pID
-	 * @param fName
-	 * @param sport
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * @return the login
 	 */
 	public Player(int pID, String fName, String sport, String zip) {
 		super();
@@ -62,12 +75,31 @@ public class Player {
 		this.sport = sport;
 		this.zipCode = zip;
 	}
+	
+	public String getLogin() {
+		return login;
+	}
 
+	/**
+	 * @param login the login to set
+	 */
+	public void setLogin() {
+		this.login = this.username+this.password;
+	}
+
+	/**
+	 * @return the Player's unique ID
+	 */
+	public int getpID() {
+		return this.pID;
+	}
+
+	
 	/**
 	 * @param pID the Player's unique ID to be set
 	 */
 	public void setpID(int pID) {
-		this.pID = pID;
+		this.pID=pID;
 	}
 
 	/**
@@ -83,7 +115,23 @@ public class Player {
 	public void setfName(String fName) {
 		this.fName = fName;
 	}
+	
+	@Transient
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return this.getPassword()+this.getUsername();
+	}
 
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Transient
 	/**
 	 * @return the Player's sport
 	 */
@@ -91,6 +139,7 @@ public class Player {
 		return sport;
 	}
 
+	
 	/**
 	 * @param sport the Player's sport to be set
 	 */
