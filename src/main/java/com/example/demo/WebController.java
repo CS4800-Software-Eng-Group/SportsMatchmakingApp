@@ -17,6 +17,11 @@ public class WebController {
 		return "home";
 	}
 	
+	@RequestMapping("/register")
+	public String register() {
+		return "register";
+	}
+	
 	@RequestMapping("/")
 	public String landing() {
 		return "landing";

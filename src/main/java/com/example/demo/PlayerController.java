@@ -9,6 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PlayerController {
+	private static int ID=100;
+	
 	@Autowired
 	PlayerRepository repo;
 	
@@ -16,15 +18,18 @@ public class PlayerController {
 	@RequestMapping("/addPlayer")
 	public String addPlayer(Player player)
 	{
+		player.setLogin();
+		player.setpID(++ID);
 		repo.save(player);
 		return "login";
 	}
 	
 	@RequestMapping("/getPlayer")
-	public ModelAndView getPlayer(@RequestParam int pID)
+	public ModelAndView getPlayer(@RequestParam String username, @RequestParam String password)
 	{
 		ModelAndView mv = new ModelAndView("home");
-		Player player = repo.findById(pID).orElse(new Player());
+		String login = username+password;
+		Player player = repo.findByLogin(login);
 		mv.addObject(player);
 		return mv;
 	}
