@@ -33,7 +33,7 @@ public class Player {
 	 * Player's password
 	 */
 	private String login;
-
+	
 	@Transient
 	/**
 	 * Sport that the Player wants to play

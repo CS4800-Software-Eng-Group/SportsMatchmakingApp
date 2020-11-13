@@ -1,1 +1,1 @@
-insert into player values (1, 'Juan', 'juanpassword', 'juan', '91016');
+insert into player values (1, 'Juan', 'Baseball', '91016', 'juan', 'juanpassword', 'juanjuanpassword');
