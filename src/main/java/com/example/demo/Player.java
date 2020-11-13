@@ -33,7 +33,7 @@ public class Player {
 	 * Player's password
 	 */
 	private String login;
-
+	
 	@Transient
 	/**
 	 * Sport that the Player wants to play
@@ -48,7 +48,7 @@ public class Player {
 	/**
 	 * ZIP code where the Player is located
 	 */
-	//private int zipCode;
+	private String zipCode;
 	
 	
 	/**
@@ -68,6 +68,14 @@ public class Player {
 	/**
 	 * @return the login
 	 */
+	public Player(int pID, String fName, String sport, String zip) {
+		super();
+		this.pID = pID;
+		this.fName = fName;
+		this.sport = sport;
+		this.zipCode = zip;
+	}
+	
 	public String getLogin() {
 		return login;
 	}
@@ -156,16 +164,16 @@ public class Player {
 	/**
 	 * @return the zipCode
 	 */
-	/*public int getZipCode() {
+	public String getZipCode() {
 		return zipCode;
-	}*/
-
+	}
+	
 	/**
 	 * @param zipCode the Player's zipCode to be set
 	 */
-	/*public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
-	}*/
+	}
 
 	@Override
 	public String toString() {

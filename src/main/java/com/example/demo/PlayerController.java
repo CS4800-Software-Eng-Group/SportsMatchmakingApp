@@ -14,7 +14,6 @@ public class PlayerController {
 	@Autowired
 	PlayerRepository repo;
 	
-	
 	@RequestMapping("/addPlayer")
 	public String addPlayer(Player player)
 	{

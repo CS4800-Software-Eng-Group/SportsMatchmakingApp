@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
 <html>
+<input type="hidden" id="playerZipCode" th:value="${player.zipCode}"/>
 <head>
 <meta charset="ISO-8859-1">
 <title>Home Page</title>
@@ -21,9 +24,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
   <div class="w3-container w3-row">
-    <div class="w3-col s4">
-      <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
-    </div>
     <div class="w3-col s8 w3-bar">
       <span>Welcome, <strong><td><tr th:text="${player.fName}"></td></strong></span><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
@@ -93,11 +93,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
   </div>
 
-  <div class="w3-panel">
-    <div class="w3-row-padding" style="margin:0 -16px">
-      <div class="w3-third">
+  <div class="w3-panel" style="height:100%;">
+    <div class="w3-row-padding" style="margin:0 -16px; height:100%;">
+      <div id="mapContainer" class="w3-third">
         <h5>Regions</h5>
-        <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+		<div id="map"></div>
       </div>
       <div class="w3-twothird">
         <h5>Feeds</h5>
@@ -171,29 +171,95 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </div>
 
 <script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
+	var map;
 
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
+	window.onload = function ()
+	{
+		var mapElement = document.getElementById('mapContainer');
+		var display = mapElement.style.display;
+		mapElement.style.display = 'none';
+		mapElement.style.height = (mapElement.parentElement.offsetHeight) + "px";
+		document.getElementById('map').style.height = "90%";
+		mapElement.style.display = display;
+		
+   		map = new ol.Map({
+        target: 'map',
+		controls: [
+		
+		],
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([37.41, 8.82]),
+          zoom: 4
+        })
+		});
+		
+		var playerZip = document.getElementById("playerZipCode").value;
+		zoomInOnZip(playerZip);
+	};
+	
+	window.onresize = function()
+	{
+		setTimeout( function() { map.updateSize();}, 200);
+	}
 
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-    overlayBg.style.display = "none";
-  } else {
-    mySidebar.style.display = 'block';
-    overlayBg.style.display = "block";
-  }
-}
+	// Get the Sidebar
+	var mySidebar = document.getElementById("mySidebar");
 
-// Close the sidebar with the close button
-function w3_close() {
-  mySidebar.style.display = "none";
-  overlayBg.style.display = "none";
-}
+	// Get the DIV with overlay effect
+	var overlayBg = document.getElementById("myOverlay");
+
+	// Toggle between showing and hiding the sidebar, and add overlay effect
+	function w3_open() {
+	  if (mySidebar.style.display === 'block') {
+		mySidebar.style.display = 'none';
+		overlayBg.style.display = "none";
+	  } else {
+		mySidebar.style.display = 'block';
+		overlayBg.style.display = "block";
+	  }
+	}
+
+	// Close the sidebar with the close button
+	function w3_close() {
+	  mySidebar.style.display = "none";
+	  overlayBg.style.display = "none";
+	}
+  
+	function zoomInOnZip(zip)
+	{
+		console.log("Focusing on zip code: " + zip);
+		axios.get('https://nominatim.openstreetmap.org/search?q=&format=geocodejson&postalcode=' + zip + '&countrycodes=US')
+		.then(function (response) {
+			if(response["data"]["features"].length == 0)
+			{
+				// No response returned, this zip code is invalid
+			}
+			else
+			{
+				var coordinates = response["data"]["features"][0]["geometry"]["coordinates"];
+				var longitude = coordinates[0];
+				var latitude = coordinates[1];
+				
+				map.setView(new ol.View({
+					center: ol.proj.fromLonLat([longitude, latitude]),
+					zoom: 12
+				}));
+			}
+		}).catch(function (error) {
+			// handle error
+		})
+			.then(function () {
+			// always executed
+		});
+	}
 </script>
-
 </body>
 </html>
+<style>
+
+</style>
