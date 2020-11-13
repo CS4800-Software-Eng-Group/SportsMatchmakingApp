@@ -12,10 +12,12 @@ body, html {
     background-image: url('../img/basketball.jpg');
 
     /*Control the the height of the image*/
-    min-height: 380px;
+    height: 100%;
+    width: 100%;
 
     /*Center and scale the image */
-    background-position: center;
+    opacity: 1;
+    background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
@@ -24,11 +26,14 @@ body, html {
 /* Add styles to form the container */
 .container {
     position: absolute;
-    right:0;
-    margin:5px 0 22px 0;
-    max-width: 300px;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -150px;
+    width:300px;
+    height:400px;
     padding: 16px;
-    background-color: white;
+    opacity: 0.8;
+    background-color: lightslategray;
 }
 
 /*Full-width input fields */
