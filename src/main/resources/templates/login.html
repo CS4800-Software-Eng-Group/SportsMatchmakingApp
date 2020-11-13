@@ -2,16 +2,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Player Login Page</title>
+<link rel="stylesheet" href = "css/login.css">
+<title>Account Login</title>
 <body>
-	LOGIN PAGE<br>
-	LOGIN<form action="getPlayer"><br>
+  <div class = "login-img">
+	<form action="getPlayer" class="container"><br>
+    <h1>Login</h1>
 		Username<input type="text" name="username"><br>
-		Password<input type="text" name="password"><br>
-		<input type="submit"><br>
+		Password<input type="password" name="password"><br>
+		<button type="submit" class="btn">Login</button>
+    <p><a href="register">Don't Have an Account? Register here.</a></p>
 	</form>
 	<br>
-	<button onclick="document.location='register'">Sign up</button>
 </body>
 </html>
