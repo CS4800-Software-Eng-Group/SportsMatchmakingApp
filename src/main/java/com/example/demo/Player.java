@@ -45,6 +45,7 @@ public class Player {
 	 */
 	//private int age;
 
+	@Transient
 	/**
 	 * ZIP code where the Player is located
 	 */
@@ -76,6 +77,10 @@ public class Player {
 		this.zipCode = zip;
 	}
 	
+	public Player() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getLogin() {
 		return login;
 	}
@@ -161,6 +166,7 @@ public class Player {
 		this.age = age;
 	}*/
 
+	@Transient
 	/**
 	 * @return the zipCode
 	 */

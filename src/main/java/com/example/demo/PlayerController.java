@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +16,12 @@ public class PlayerController {
 	PlayerRepository repo;
 	
 	@RequestMapping("/addPlayer")
-	public String addPlayer(Player player)
+	public String addPlayer(@RequestParam String fName, @RequestParam String username, String password)
 	{
+		Player player = new Player();
+		player.setUsername(username);
+		player.setfName(fName);
+		player.setPassword(password);
 		player.setLogin();
 		player.setpID(++ID);
 		repo.save(player);
