@@ -34,7 +34,7 @@ public class Player {
 	 */
 	private String login;
 	
-	@Transient
+	
 	/**
 	 * Sport that the Player wants to play
 	 */
@@ -45,7 +45,7 @@ public class Player {
 	 */
 	//private int age;
 
-	@Transient
+	
 	/**
 	 * ZIP code where the Player is located
 	 */
@@ -136,7 +136,7 @@ public class Player {
 		this.password = password;
 	}
 
-	@Transient
+	
 	/**
 	 * @return the Player's sport
 	 */
@@ -166,7 +166,7 @@ public class Player {
 		this.age = age;
 	}*/
 
-	@Transient
+	
 	/**
 	 * @return the zipCode
 	 */
