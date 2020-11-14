@@ -35,6 +35,8 @@ public class PlayerController {
 		String login = username+password;
 		Player player = repo.findByLogin(login);
 		mv.addObject(player);
+		int count=(int)repo.count();
+		mv.addObject("count", count);
 		return mv;
 	}
 }
