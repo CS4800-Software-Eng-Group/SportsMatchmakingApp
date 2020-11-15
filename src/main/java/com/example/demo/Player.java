@@ -183,7 +183,10 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [pID=" + pID + ", fName=" + fName + ", sport=" + sport + "]";
+		return "Player [pID=" + pID + ", fName=" + fName + ", username=" + username + ", sport=" + sport + ", zipCode="
+				+ zipCode + "]";
 	}
+
+
 
 }
