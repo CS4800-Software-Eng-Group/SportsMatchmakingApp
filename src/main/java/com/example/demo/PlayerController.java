@@ -41,21 +41,12 @@ public class PlayerController {
 	@RequestMapping("/getPlayer")
 	public ModelAndView getPlayer(@RequestParam String username, @RequestParam String password)
 	{
-		ModelAndView mv = new ModelAndView("home");
+		ModelAndView mv = new ModelAndView("profile");
 		String login = username+password;
 		Player player = repo.findByLogin(login);
 		mv.addObject("player", player);
 		int count=(int)repo.count();
 		mv.addObject("count", count);
-		/*
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		*/
 		return mv;
 	}
 	

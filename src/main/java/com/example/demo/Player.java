@@ -16,7 +16,17 @@ public class Player {
 	/**
 	 * Player's first name
 	 */
-	private String fName;
+	private String firstName;
+	
+	/**
+	 * The user's last name
+	 */
+	private String lastName;
+	
+	/**
+	 * The user's profile bio
+	 */
+	private String bio;
 	
 	/**
 	 * Player's password
@@ -51,7 +61,6 @@ public class Player {
 	 */
 	private String zipCode;
 	
-	
 	/**
 	 * @return the username
 	 */
@@ -69,16 +78,14 @@ public class Player {
 	/**
 	 * @return the login
 	 */
-	public Player(int pID, String fName, String sport, String zip) {
+	public Player(int pID, String fName, String lName, String bio, String sport, String zip) {
 		super();
 		this.pID = pID;
-		this.fName = fName;
+		this.firstName = fName;
+		this.lastName = lName;
+		this.bio = bio;
 		this.sport = sport;
 		this.zipCode = zip;
-	}
-	
-	public Player() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getLogin() {
@@ -99,6 +106,10 @@ public class Player {
 		return this.pID;
 	}
 
+	public String getLastName()
+	{
+		return lastName;
+	}
 	
 	/**
 	 * @param pID the Player's unique ID to be set
@@ -111,14 +122,14 @@ public class Player {
 	 * @return the Player's first name
 	 */
 	public String getfName() {
-		return fName;
+		return firstName;
 	}
 
 	/**
 	 * @param fName the Player's first name to be set
 	 */
 	public void setfName(String fName) {
-		this.fName = fName;
+		this.firstName = fName;
 	}
 	
 	@Transient
@@ -183,7 +194,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [pID=" + pID + ", fName=" + fName + ", username=" + username + ", sport=" + sport + ", zipCode="
+		return "Player [pID=" + pID + ", fName=" + firstName + ", username=" + username + ", sport=" + sport + ", zipCode="
 				+ zipCode + "]";
 	}
 

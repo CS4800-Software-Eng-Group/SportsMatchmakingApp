@@ -1,0 +1,65 @@
+html, body {
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+div {
+	margin: 0;
+	padding: 0;
+}
+
+.circleImage {
+	clip-path: circle(50% at center);
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+  position: relative;
+  top: 35%;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.menuItem {
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	height: 20%;
+}
+
+.menuItem:hover {
+	width: 100%;
+	background-color: rgba(100, 100, 100, 255);
+	height: 20%;
+}
+
+.selected {
+	background-color: black !important;
+}
+
+.selected:hover {
+	background-color: black !important;
+}
+
+.row:after {
+  display: table;
+  clear: both;
+}
+
+.b-yellow {
+  background-image: url(../img/fourth-bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
