@@ -1,17 +1,18 @@
 package com.example.demo;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
 @Entity
 public class Player {
 	
-	@Id
+	@Id @GeneratedValue
 	/**
 	 * Player's unique ID	
 	 */
-	private int pID;
+	private long pID;
 
 	/**
 	 * Player's first name
@@ -33,17 +34,10 @@ public class Player {
 	 */
 	private String username;
 	
-	@Transient
 	/**
 	 * Player's password
 	 */
 	private String password;
-	
-	/**
-	 * Player's password
-	 */
-	private String login;
-	
 	
 	/**
 	 * Sport that the Player wants to play
@@ -78,37 +72,27 @@ public class Player {
 	/**
 	 * @return the login
 	 */
-	public Player(int pID, String fName, String lName, String bio, String sport, String zip) {
+	public Player(String username, String fName, String lName, String bio, String sport, String password, String zip) {
 		super();
-		this.pID = pID;
+		this.username = username;
 		this.firstName = fName;
 		this.lastName = lName;
+		this.password = password;
 		this.bio = bio;
 		this.sport = sport;
 		this.zipCode = zip;
 	}
-
-	public String getLogin() {
-		return login;
+	
+	public Player()
+	{
+		
 	}
-
-	/**
-	 * @param login the login to set
-	 */
-	public void setLogin() {
-		this.login = this.username+this.password;
-	}
-
+	
 	/**
 	 * @return the Player's unique ID
 	 */
-	public int getpID() {
+	public long getpID() {
 		return this.pID;
-	}
-
-	public String getLastName()
-	{
-		return lastName;
 	}
 	
 	/**
@@ -121,23 +105,43 @@ public class Player {
 	/**
 	 * @return the Player's first name
 	 */
-	public String getfName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
 	 * @param fName the Player's first name to be set
 	 */
-	public void setfName(String fName) {
+	public void setFirstName(String fName) {
 		this.firstName = fName;
 	}
 	
-	@Transient
+	
+	public void setLastName(String lName)
+	{
+		this.lastName = lName;
+	}
+
+	public String getLastName()
+	{
+		return lastName;
+	}
+	
+	public void setBio(String bio)
+	{
+		this.bio = bio;
+	}
+	
+	public String getBio()
+	{
+		return bio;
+	}
+	
 	/**
 	 * @return the password
 	 */
 	public String getPassword() {
-		return this.getPassword()+this.getUsername();
+		return password;
 	}
 
 	/**

@@ -25,14 +25,10 @@ public class PlayerController {
 	PlayerRepository repo;
 	
 	@RequestMapping("/addPlayer")
-	public String addPlayer(@RequestParam String fName, @RequestParam String username, String password)
+	public String addPlayer(@RequestParam String fName, @RequestParam String username, @RequestParam String password)
 	{
-		Player player = new Player();
-		player.setUsername(username);
-		player.setfName(fName);
-		player.setPassword(password);
-		player.setLogin();
-		player.setpID(++ID);
+		Player player = new Player(username, fName, "", "", "", password, "");
+		System.out.println("Creating player with username " + username + " and password " + password);
 		repo.save(player);
 		return "login";
 	}
@@ -42,11 +38,15 @@ public class PlayerController {
 	public ModelAndView getPlayer(@RequestParam String username, @RequestParam String password)
 	{
 		ModelAndView mv = new ModelAndView("profile");
-		String login = username+password;
-		Player player = repo.findByLogin(login);
-		mv.addObject("player", player);
-		int count=(int)repo.count();
-		mv.addObject("count", count);
+		Player player = repo.findByUsernameAndPassword(username, password);
+		System.out.println("Searching for user with Username: " + username + " and Password: " + password);
+		System.out.println("Player is null: " + (player == null));
+		if(player != null)
+		{
+			mv.addObject("player", player);
+			int count= (int) repo.count();
+			mv.addObject("count", count);
+		}
 		return mv;
 	}
 	
