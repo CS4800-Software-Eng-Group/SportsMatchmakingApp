@@ -1,44 +1,56 @@
 <!doctype html>
 <html>
     <head>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+	<script src="js/navforms.js"></script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Stacked - Free CSS Template</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="css/main.css">
     </head>
     <body style="height: 100%;">
         <div class="b-yellow row" style="height: 100vh">
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150);">
-				<a href="./search">
-				<div class="menuItem">
-				  <img src="img/search-icon.png" alt="" class="center">
-				</div>
-				</a>
-				<a href="./profile">
-				<div class="menuItem selected">
-				  <img src="img/account-icon.png" alt="" class="center">
-				</div>
-				</a>
-				<a href="./map">
-				<div class="menuItem">
-				  <img src="img/map-icon.png" alt="" class="center">
-				</div>
-				</a>
-				<a href="./messages">
-				<div class="menuItem">
-				  <img src="img/messages-icon.png" alt="" class="center">
-				</div>
-				</a>
+				<form action="search" class="menuItem" name="login" onsubmit="return searchForm()" method="POST"><br>
+					<input type="text" name="username" id="searchUser" style="display: none;"/>
+					<input type="text" name="password" id="searchPass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/search-icon.png" alt="" class="center">
+					</button>
+				</form>
+				<form action="" class="menuItem selected" name="login" onsubmit="return profileForm()" method="POST"><br>
+					<input type="text" name="username" id="mapUser" style="display: none;"/>
+					<input type="text" name="password" id="mapPass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/account-icon.png" alt="" class="center">
+					</button>
+				</form>
+				<form action="map" class="menuItem" name="login" onsubmit="return mapForm()" method="POST"><br>
+					<input type="text" name="username" id="profileUser" style="display: none;"/>
+					<input type="text" name="password" id="profilePass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/map-icon.png" alt="" class="center">
+					</button>
+				</form>
+				<form action="messages" class="menuItem" name="login" onsubmit="return messagesForm()" method="POST"><br>
+					<input type="text" name="username" id="messagesUser" style="display: none;"/>
+					<input type="text" name="password" id="messagesPass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/messages-icon.png" alt="" class="center">
+					</button>
+				</form>
 			</div>
 			<div style="width:100%;">
 				<div class="center" style="top: 5% !important; text-align:center;">
 					<div class="center" style="border-radius: 50%; border: 4px solid black; width: 200px; height: 200px;">
 						<img src="img/test.png" class="circleImage" style=" width: 100%;">
 					</div>
-					<div style="color: white; font-weight: bold; font-size: 42pt;"><tr th:text="${player.fName}"> <tr th:text="${player.lName}"></div>
+					<div style="color: white; font-weight: bold; font-size: 42pt;"><div th:text="${player.firstName + ' ' + player.lastName}"/></div>
 				</div>
 				<div class="center" style="top: 5% !important; margin-top: 5px; text-align:center; width: 100%; height: 80%; background-color: rgba(50, 50, 50, .5);">
 					<div style="color: white; float: left; padding: 25px; font-weight: bold; font-size: 32pt;">
@@ -50,5 +62,3 @@
         </div>
     </body>
 </html>
-<script>
-</script>
