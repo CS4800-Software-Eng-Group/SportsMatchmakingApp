@@ -46,16 +46,7 @@ public class PlayerController {
 		Player player = repo.findByLogin(login);
 		mv.addObject("player", player);
 		int count=(int)repo.count();
-		mv.addObject("count", count);
-		/*
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		mv.addObject("basketball", repo.countBySport("basketball"));
-		*/
+		mv.addObject("count", count);		
 		return mv;
 	}
 	
@@ -72,7 +63,22 @@ public class PlayerController {
 	{
 		ModelAndView mv = new ModelAndView("home");
 		repo.save(player);
-		List<Player> playersNearby=repo.findBySport(player.getSport());
+		//List<Player> playersNearby=repo.findBySport(player.getSport());
+		int count=(int)repo.count();
+		mv.addObject("count", count);
+		/*
+		long basketballcount=repo.countByZipCodeAndSport(player.getZipCode(),"basketball");
+		long soccercount=repo.countByZipCodeAndSport(player.getZipCode(),"soccer");
+		long baseballcount=repo.countByZipCodeAndSport(player.getZipCode(),"baseball");
+		long footballcount=repo.countByZipCodeAndSport(player.getZipCode(),"football");
+		long tenniscount=repo.countByZipCodeAndSport(player.getZipCode(),"tennis");
+		*/
+		mv.addObject("basketballcount", repo.countByZipCodeAndSport(player.getZipCode(),"basketball"));
+		mv.addObject("soccercount", repo.countByZipCodeAndSport(player.getZipCode(), "soccer"));
+		mv.addObject("baseballcount", repo.countByZipCodeAndSport(player.getZipCode(), "baseball"));
+		mv.addObject("footballcount", repo.countByZipCodeAndSport(player.getZipCode(), "football"));
+		mv.addObject("tenniscount", repo.countByZipCodeAndSport(player.getZipCode(), "tennis"));
+		
 		status.setComplete();
 		return mv;
 	}

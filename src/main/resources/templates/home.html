@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
 <html>
-<input type="hidden" id="playerZipCode" th:value="${player.zipCode}"/>
 <head>
 <meta charset="ISO-8859-1">
 <title>Home Page</title>
@@ -10,11 +7,15 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
-<body class="w3-light-grey">
+</head>
 
+<body class="w3-light-grey">
+<input type="hidden" id="playerZipCode" th:value="${player.zipCode}"/>
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
@@ -38,7 +39,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <div class="w3-quarter">
       <div class="w3-container w3-red w3-padding-16">
         <div class="w3-left">
-        	<form action="/getSport">
+        	<form action="/getZip">
   				<label for="sport">Choose a sport:</label>
   				<select name="sport" id="sport">
 	    			<option value="basketball">Basketball</option>
@@ -47,14 +48,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	    			<option value="football">Football</option>
 	    			<option value="tennis">Tennis</option>
   				</select>
-  			<br><br>
+  				<br>ZIPCode<input type="text" name="zipCode"><br><br>
+  			<br>
   			<input type="submit" value="Submit"><br><br>
 			</form>
 		</div>
       </div>
     </div>
 
-
+<!--
     <div class="w3-quarter">
       <div class="w3-container w3-blue w3-padding-16">
         <div class="w3-left">
@@ -65,7 +67,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         </div>
       </div>
     </div>
-    
+    -->
 
     <div class="w3-quarter">
       <div class="w3-container w3-orange w3-text-white w3-padding-16">
@@ -91,32 +93,27 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
           <tr>
             <td></td>
             <td>Basketball</td>
-            <td><i># of players</i></td>
+            <td><i th:text="${basketballcount}"></i></td>
           </tr>
           <tr>
             <td></td>
             <td>Soccer</td>
-            <td><i># of players</i></td>
+            <td><i th:text="${soccercount}"></i></td>
           </tr>
           <tr>
             <td></td>
             <td>Baseball</td>
-            <td><i># of players</i></td>
+            <td><i th:text="${baseballcount}"></i></td>
           </tr>
           <tr>
             <td></td>
             <td>Football</td>
-            <td><i># of players</i></td>
+            <td><i th:text="${footballcount}"></i></td>
           </tr>
           <tr>
             <td></td>
             <td>Tennis</td>
-            <td><i># of players</i></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>Other</td>
-            <td><i># of players</i></td>
+            <td><i th:text="${tenniscount}"></i></td>
           </tr>
         </table>
       </div>
@@ -145,6 +142,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
           new ol.layer.Tile({
             source: new ol.source.OSM()
           })
+          
         ],
         view: new ol.View({
           center: ol.proj.fromLonLat([37.41, 8.82]),
@@ -153,7 +151,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 		});
 		
 		var playerZip = document.getElementById("playerZipCode").value;
-		zoomInOnZip(playerZip);
+		if(playerZip!=null)
+			zoomInOnZip(playerZip);
+		else
+			zoomInOnZip(91768);
 	};
 	
 	window.onresize = function()
@@ -199,10 +200,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 				var longitude = coordinates[0];
 				var latitude = coordinates[1];
 				
+				
 				map.setView(new ol.View({
 					center: ol.proj.fromLonLat([longitude, latitude]),
 					zoom: 12
 				}));
+				
+				
 			}
 		}).catch(function (error) {
 			// handle error
@@ -214,6 +218,4 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </script>
 </body>
 </html>
-<style>
 
-</style>
