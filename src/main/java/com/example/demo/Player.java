@@ -44,6 +44,12 @@ public class Player {
 	 */
 	private String sport; //Will be changed to a Sport Object
 
+	private String address;
+	
+	private String city;
+	
+	private String state;
+	
 	/**
 	 * Player's years of age
 	 */
@@ -72,7 +78,7 @@ public class Player {
 	/**
 	 * @return the login
 	 */
-	public Player(String username, String fName, String lName, String bio, String sport, String password, String zip) {
+	public Player(String username, String fName, String lName, String bio, String sport, String password, String address, String city, String state, String zip) {
 		super();
 		this.username = username;
 		this.firstName = fName;
@@ -81,6 +87,9 @@ public class Player {
 		this.bio = bio;
 		this.sport = sport;
 		this.zipCode = zip;
+		this.address = address;
+		this.city = city;
+		this.state = state;
 	}
 	
 	public Player()
@@ -116,15 +125,44 @@ public class Player {
 		this.firstName = fName;
 	}
 	
+	public String getLastName()
+	{
+		return lastName;
+	}
 	
 	public void setLastName(String lName)
 	{
 		this.lastName = lName;
 	}
 
-	public String getLastName()
+	public void setCity(String city)
 	{
-		return lastName;
+		this.city = city;
+	}
+	
+	public String getCity()
+	{
+		return city;
+	}
+	
+	public void setAddress(String address)
+	{
+		this.address = address;
+	}
+	
+	public String getAddress()	
+	{
+		return address;
+	}
+	
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+	
+	public String getState()
+	{
+		return state;
 	}
 	
 	public void setBio(String bio)

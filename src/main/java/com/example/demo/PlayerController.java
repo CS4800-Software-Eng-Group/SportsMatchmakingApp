@@ -25,14 +25,14 @@ public class PlayerController {
 	PlayerRepository repo;
 	
 	@RequestMapping("/addPlayer")
-	public String addPlayer(@RequestParam String fName, @RequestParam String username, @RequestParam String password)
+	public String addPlayer(@RequestParam String fName, @RequestParam String lName, @RequestParam String username, @RequestParam String password, 
+			@RequestParam String address, @RequestParam String city, @RequestParam String zipcode, @RequestParam String state)
 	{
-		Player player = new Player(username, fName, "", "", "", password, "");
+		Player player = new Player(username, fName, lName, "", "", password, address, city, state, zipcode);
 		System.out.println("Creating player with username " + username + " and password " + password);
 		repo.save(player);
 		return "login";
 	}
-	
 	
 	@RequestMapping("/getPlayer")
 	public ModelAndView getPlayer(@RequestParam String username, @RequestParam String password)
@@ -67,6 +67,4 @@ public class PlayerController {
 		status.setComplete();
 		return mv;
 	}
-	
-	
 }
