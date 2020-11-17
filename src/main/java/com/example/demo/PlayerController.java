@@ -50,6 +50,19 @@ public class PlayerController {
 		return mv;
 	}
 	
+	@RequestMapping("/map")
+	public ModelAndView getMap(@RequestParam String username, @RequestParam String password)
+	{
+		ModelAndView mv = new ModelAndView("map");
+		Player 	player = repo.findByUsernameAndPassword(username, password);
+		if(player != null)
+		{
+			mv.addObject("player", player);
+		}
+		System.out.println("Returning map");
+		return mv;
+	}
+	
 	@GetMapping("/getSport")
 	public ModelAndView getSport(@ModelAttribute("player") Player player)
 	{

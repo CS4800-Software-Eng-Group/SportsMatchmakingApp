@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <head>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
         <meta charset="utf-8">
@@ -14,26 +15,31 @@
     <body style="height: 100%;">
         <div class="b-yellow row" style="height: 100vh">
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150);">
-				<a href="./search">
-				<div class="menuItem">
-				  <img src="img/search-icon.png" alt="" class="center">
-				</div>
-				</a>
-				<a href="./profile">
+				<form action="search" class="menuItem" name="login" onsubmit="return validateForm()" method="POST"><br>
+					<input type="text" name="username" id="mapUser" style="display: none;"/>
+					<input type="text" name="password" id="mapPass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/search-icon.png" alt="" class="center">
+					</button>
+				</form>
 				<div class="menuItem selected">
 				  <img src="img/account-icon.png" alt="" class="center">
 				</div>
 				</a>
-				<a href="./map">
-				<div class="menuItem">
-				  <img src="img/map-icon.png" alt="" class="center">
-				</div>
-				</a>
-				<a href="./messages">
-				<div class="menuItem">
-				  <img src="img/messages-icon.png" alt="" class="center">
-				</div>
-				</a>
+				<form action="map" class="menuItem" name="login" onsubmit="return validateForm()" method="POST"><br>
+					<input type="text" name="username" id="mapUser" style="display: none;"/>
+					<input type="text" name="password" id="mapPass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/map-icon.png" alt="" class="center">
+					</button>
+				</form>
+				<form action="map" class="menuItem" name="login" onsubmit="return validateForm()" method="POST"><br>
+					<input type="text" name="username" id="mapUser" style="display: none;"/>
+					<input type="text" name="password" id="mapPass" style="display: none;"/>
+					<button type="submit">
+					  <img src="img/messages-icon.png" alt="" class="center">
+					</button>
+				</form>
 			</div>
 			<div style="width:100%;">
 				<div class="center" style="top: 5% !important; text-align:center;">
@@ -53,4 +59,28 @@
     </body>
 </html>
 <script>
+	function switchPages(page)
+	{
+		var user = Cookies.get('username');
+		var pass = Cookies.get('password');
+		console.log('username: ' + user + " password: " + pass);
+		axios.post('/' + page, null, { params: {
+			username: user,
+			password: pass
+		}})
+		.then(function (response) {
+			window.location.replace = '/' + page;
+			console.log("Response: " + response);
+		})
+		.catch(function (error) {
+			console.log("Error: " + error);
+		});
+	}
+	
+	function validateForm()
+	{
+		document.getElementById("mapUser").value = Cookies.get('username');
+		document.getElementById("mapPass").value = Cookies.get('password');
+		return true;
+	}
 </script>

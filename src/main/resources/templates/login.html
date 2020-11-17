@@ -2,11 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <link rel="stylesheet" href = "css/login.css">
 <title>Account Login</title>
 <body>
   <div class = "login-img">
-	<form action="getPlayer" class="container" method="POST"><br>
+	<form action="getPlayer" name="login" class="container" onsubmit="return validateForm()" method="POST"><br>
     <h1>Login</h1>
 		Username<input type="text" name="username"><br>
 		Password<input type="password" name="password"><br>
@@ -16,3 +17,11 @@
 	<br>
 </body>
 </html>
+<script>
+function validateForm() {
+	var form = document.forms["login"];
+	Cookies.set('username', form['username'].value);
+	Cookies.set('password', form['password'].value);
+	return true;
+}
+</script>

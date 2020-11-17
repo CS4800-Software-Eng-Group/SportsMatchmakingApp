@@ -30,10 +30,34 @@ img {
 	vertical-align: middle;
 }
 
+button {
+	width: 100% !important;
+	height: 100% !important;
+	background-color: rgba(0, 0, 0, 0) !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+}
+
+button:focus {
+	outline: none !important;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+form {
+	padding: 0 !important;
+}
+
 .menuItem {
-	width: 100%;
+	width: 100% !important;
 	background-color: rgba(0, 0, 0, 0);
-	height: 20%;
+	height: 20% !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .menuItem:hover {
