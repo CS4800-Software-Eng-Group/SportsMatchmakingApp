@@ -1,0 +1,65 @@
+body, html {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.login-img {
+    /* The image used */
+    background-image: url('../img/basketball.jpg');
+
+    /*Control the the height of the image*/
+    height: 100%;
+    width: 100%;
+
+    /*Center and scale the image */
+    opacity: 1;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+/* Add styles to form the container */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -150px;
+    width:300px;
+    height:400px;
+    padding: 16px;
+    opacity: 0.8;
+    background-color: lightslategray;
+}
+
+/*Full-width input fields */
+input[type=text], input[type=password]{
+    width: 100%;
+    padding:15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background:  #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus{
+    background-color:#ddd;
+    outline: none;
+}
+/*Set a style for the submit button */
+.btn{
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+.btn:hover
+{
+    opacity:1;
+}

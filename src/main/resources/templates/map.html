@@ -1,0 +1,68 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+    <title>OpenLayers example</title>
+  </head>
+  <body>
+    <h2>My Map</h2>
+    <div id="map" class="map"></div>
+	Search Zip
+	<input id="zip" autocomplete="off"/>
+	<button onclick="zoomInOnZip()">Search</button><br>
+	<div id="error"></div>
+  </body>
+</html>
+<script>
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([37.41, 8.82]),
+          zoom: 4
+        })
+      });
+  
+  function zoomInOnZip()
+  {
+	axios.get('https://nominatim.openstreetmap.org/search?q=&format=geocodejson&postalcode=' + zip + '&countrycodes=US')
+	.then(function (response) {
+		if(response["data"]["features"].length == 0)
+		{
+			// No response returned, this zip code is invalid
+			document.getElementById("error").innerHTML = "Zip code not found: " + zip;
+		}
+		else
+		{
+			document.getElementById("error").innerHTML = "";
+			var coordinates = response["data"]["features"][0]["geometry"]["coordinates"];
+			var longitude = coordinates[0];
+			var latitude = coordinates[1];
+			
+			map.setView(new ol.View({
+				center: ol.proj.fromLonLat([longitude, latitude]),
+				zoom: 12
+			}));
+		}
+	})
+  .catch(function (error) {
+    // handle error
+	document.getElementById("error").innerHTML = "Zip code not found :(";
+  })
+  .then(function () {
+    // always executed
+  });
+  }
+</script>
