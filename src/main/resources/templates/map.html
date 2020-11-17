@@ -99,7 +99,37 @@
         })
 		});
 		
-		zoomInOnAddress();
+		map.on('click', function(evt) {
+			var features = map.forEachFeatureAtPixel(evt.pixel,
+				function(feature) {
+					console.log("Feature clicked: " + feature["values_"]["name"]);
+				}
+			);
+		});
+		
+		var user = Cookies.get('username');
+		var pass = Cookies.get('password');
+		axios.get('/getPlayers')
+		.then(function (response) {
+			console.log("Players: " + response);
+			response["data"].forEach(function(player) {
+				// For each user that is not the current one
+				if(player["username"] != user && player["password"] != pass)
+				{
+					placeIconAtAddress(player["zipCode"], player["address"], player["city"], player["state"], 'img/account-icon-black.png', player["firstName"] + " " + player["lastName"]);
+				}
+			});
+		}).catch(function (error) {
+			console.log(error);
+		}).then(function () {
+		 
+		});
+		
+		var zip = document.getElementById("playerZipCode").value;
+		var address = document.getElementById("playerAddress").value;
+		var city = document.getElementById("playerCity").value;
+		var state = document.getElementById("playerState").value;
+		placeIconAtAddress(zip, address, city, state, 'img/home-icon-black.png', 'Home');
 	};
 	
 	window.onresize = function()
@@ -128,6 +158,51 @@
 	function w3_close() {
 	  mySidebar.style.display = "none";
 	  overlayBg.style.display = "none";
+	}
+	
+	function placeIconAtAddress(zip, address, city, state, iconSrc, iconName)
+	{
+		axios.get('https://nominatim.openstreetmap.org/search?q=' + address + ',' + city + '&format=geocodejson&postalcode=' + zip + '&countrycodes=US')
+		.then(function (response) {
+			if(response["data"]["features"].length == 0)
+			{
+				// No response returned, this zip code is invalid
+			}
+			else
+			{
+				var coordinates = response["data"]["features"][0]["geometry"]["coordinates"];
+				var longitude = coordinates[0];
+				var latitude = coordinates[1];
+				
+				map.setView(new ol.View({
+					center: ol.proj.fromLonLat([longitude, latitude]),
+					zoom: 13
+				}));
+				
+				var iconStyle = new ol.style.Style({
+					image: new ol.style.Icon({
+						src: iconSrc,
+						scale: .5
+					})
+				});
+				
+				var homePoint = new ol.Feature({
+					name: iconName,
+					geometry: new ol.geom.Point(
+						ol.proj.fromLonLat([longitude, latitude])
+					),
+				});
+				
+				homePoint.setStyle(iconStyle);
+				
+				vectorSource.addFeature(homePoint);
+			}
+		}).catch(function (error) {
+			// handle error
+		})
+			.then(function () {
+			// always executed
+		});
 	}
   
 	function zoomInOnAddress()
@@ -163,7 +238,7 @@
 				});
 				
 				var homePoint = new ol.Feature({
-					name: "Test",
+					name: "Home",
 					geometry: new ol.geom.Point(
 						ol.proj.fromLonLat([longitude, latitude])
 					),

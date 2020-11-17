@@ -3392,3 +3392,9 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:D:/Program F
 	at org.h2.mvstore.FileStore.open(FileStore.java:172)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:381)
 	... 46 more
+2020-11-17 12:43:24 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PLAYER VALUES(166, ""username"", """", ""91016"", """", ""John"", ""Smith"", ""password"", 141 E[*] COLORADO BLVD"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+INSERT INTO PLAYER VALUES(166, "username", "", "91016", "", "John", "Smith", "password", 141 E Colorado Blvd [42001-200]
+2020-11-17 12:43:34 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PLAYER VALUES(166, ""username"", """", ""91016"", """", ""John"", ""Smith"", ""password"", 141 E Colorado Blvd"", ""Monrovia"", ""CA[*]"")"; SQL statement:
+INSERT INTO PLAYER VALUES(166, "username", "", "91016", "", "John", "Smith", "password", 141 E Colorado Blvd", "Monrovia", "CA") [42000-200]

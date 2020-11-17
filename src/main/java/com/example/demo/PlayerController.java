@@ -1,8 +1,10 @@
 package com.example.demo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -23,7 +26,7 @@ public class PlayerController {
 	
 	@Autowired
 	PlayerRepository repo;
-	
+		
 	@RequestMapping("/addPlayer")
 	public String addPlayer(@RequestParam String fName, @RequestParam String lName, @RequestParam String username, @RequestParam String password, 
 			@RequestParam String address, @RequestParam String city, @RequestParam String zipcode, @RequestParam String state)
@@ -61,6 +64,15 @@ public class PlayerController {
 		}
 		System.out.println("Returning map");
 		return mv;
+	}
+	
+	@RequestMapping(value = "/getPlayers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<Player> getPlayers()
+	{
+		List<Player> players = new ArrayList<Player>();
+		Iterable<Player> iterable = repo.findAll();
+	    iterable.forEach(players::add);
+	    return players;
 	}
 	
 	@GetMapping("/getSport")
