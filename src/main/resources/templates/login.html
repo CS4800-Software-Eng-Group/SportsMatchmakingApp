@@ -20,8 +20,8 @@
 <script>
 function validateForm() {
 	var form = document.forms["login"];
-	Cookies.set('username', form['username'].value);
-	Cookies.set('password', form['password'].value);
+	Cookies.set('username', form['username'].value, { expires: 7 });
+	Cookies.set('password', form['password'].value, { expires: 7 });
 	return true;
 }
 </script>
