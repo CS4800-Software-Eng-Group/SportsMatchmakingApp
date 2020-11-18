@@ -19,8 +19,7 @@
 		<input type="hidden" id="playerState" th:value="${player.state}"/>
     </head>
     <body style="height: 100%;">
-        <div class="b-yellow row" style="height: 100vh">
-			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150);">
+			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
 				<form action="search" class="menuItem" name="login" onsubmit="return searchForm()" method="POST"><br>
 					<input type="text" name="username" id="searchUser" style="display: none;"/>
 					<input type="text" name="password" id="searchPass" style="display: none;"/>
@@ -50,7 +49,7 @@
 					</button>
 				</form>
 			</div>
-			<div style="width:100%; height: 100%;">
+			<div style="width:90%; height: 100%; margin-left: 10%;">
 				<div style="font-size: 42pt; font-weight:bold; color: white; padding: 25px;">Map</div>
 				<div class="row" style="width:100%; height: 100%">
 					<div id="mapContainer" style="float: left; width: 50%; padding-left: 25px;">
@@ -68,7 +67,6 @@
 					</div>
 				</div>
 			</div>
-        </div>
     </body>
 </html>
 
@@ -139,7 +137,7 @@
 				// For each user that is not the current one
 				if(player["username"] != user && player["password"] != pass)
 				{
-					placeIconAtAddress(player["zipCode"], player["address"], player["city"], player["state"], 'img/account-icon-black.png', "Player", player);
+					placeIconAtAddress(player["zipCode"], player["address"], player["city"], player["state"], 'img/account-icon-black.png', "Player", player, false);
 				}
 			});
 		}).catch(function (error) {
@@ -152,7 +150,7 @@
 		var address = document.getElementById("playerAddress").value;
 		var city = document.getElementById("playerCity").value;
 		var state = document.getElementById("playerState").value;
-		var homeIcon = placeIconAtAddress(zip, address, city, state, 'img/home-icon-black.png', 'Home', '');
+		var homeIcon = placeIconAtAddress(zip, address, city, state, 'img/home-icon-black.png', 'Home', '', true);
 	};
 	
 	window.onresize = function()
@@ -183,7 +181,7 @@
 	  overlayBg.style.display = "none";
 	}
 	
-	function placeIconAtAddress(zip, address, city, state, iconSrc, type, data)
+	function placeIconAtAddress(zip, address, city, state, iconSrc, type, data, setFocus)
 	{
 		var homePoint = null;
 		axios.get('https://nominatim.openstreetmap.org/search?q=' + address + ',' + city + '&format=geocodejson&postalcode=' + zip + '&countrycodes=US')
@@ -198,10 +196,13 @@
 				var longitude = coordinates[0];
 				var latitude = coordinates[1];
 				
-				map.setView(new ol.View({
-					center: ol.proj.fromLonLat([longitude, latitude]),
-					zoom: 13
-				}));
+				if(setFocus)
+				{
+					map.setView(new ol.View({
+						center: ol.proj.fromLonLat([longitude, latitude]),
+						zoom: 13
+					}));
+				}
 				
 				var iconStyle = new ol.style.Style({
 					image: new ol.style.Icon({

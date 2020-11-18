@@ -14,8 +14,8 @@
 		<link rel="stylesheet" href="css/main.css">
     </head>
     <body style="height: 100%;">
-        <div class="b-yellow row" style="height: 100vh">
-			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150);">
+
+			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
 				<form action="search" class="menuItem" name="login" onsubmit="return searchForm()" method="POST"><br>
 					<input type="text" name="username" id="searchUser" style="display: none;"/>
 					<input type="text" name="password" id="searchPass" style="display: none;"/>
@@ -45,27 +45,32 @@
 					</button>
 				</form>
 			</div>
-			<div style="width:100%;">
+			<div style="width:90%; margin-left: 10%;">
 				<div class="center" style="top: 5% !important; text-align:center;">
 					<div class="center" style="border-radius: 50%; border: 4px solid black; width: 200px; height: 200px;">
 						<img src="img/test.png" class="circleImage" style=" width: 100%;">
 					</div>
 					<div style="color: white; font-weight: bold; font-size: 42pt;"><div th:text="${player.firstName + ' ' + player.lastName}"/></div>
 				</div>
-				<div class="center" style="top: 5% !important; margin-top: 5px; text-align:center; width: 100%; height: 80%; background-color: rgba(50, 50, 50, .5);">
+				<div class="center" style="top: 5% !important; margin-top: 5px; text-align:center; width: 100%; height: 100%; background-color: rgba(50, 50, 50, .5);">
 					<div style="width: 100%; height: 100%; color: white; float: left; padding: 25px; font-weight: bold; font-size: 32pt;">
 						<div style="display: flex;">
 							<div style="text-align: left;">
 							Bio
 							</div>
-							<button id="doneEditingButton" onclick="submitBio()" style="float: left; background-color: rgba(76, 171, 63, 1) !important; width: 32pt; height: 32pt; display: none;">Save</button>
+							<button id="doneEditingButton" onclick="submitBio()" style="float: left; background-color: rgba(76, 171, 63, 1) !important; width: 32pt; height: 32pt; display: none; border-radius: 20%; margin-left: 10px;">Save</button>
 							<input id="editButton" style="width: 32pt; height: 32pt;" type="image" src="img/edit-icon-2.png" onclick="enableBioEdit()"/>
 						</div>
 						<textarea id="bioInput" placeholder="Write something about yourself here!" disabled style="width: 90%; color: white; background-color: rgba(75, 75, 75, .75); height: 50%; resize: none; float: left;" th:field="*{player.bio}"></textarea>
+						Friends<br>
+						ksdfajkls<br>
+						kdsjfklsfd<br>
+						<br>kfsjakfjsafklsa
+						<br>kfdjlkjalsfjklsdajkf
+						<br>ksjakfjaslfjkl
 					</div>
 				</div>
 			</div>
-        </div>
     </body>
 </html>
 <script>
