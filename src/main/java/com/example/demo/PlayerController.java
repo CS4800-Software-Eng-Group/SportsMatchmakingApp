@@ -2,15 +2,24 @@ package com.example.demo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PlayerController {
 	private static int ID=100;
+	private static JsonParser jsonParser = JsonParserFactory.getJsonParser();
 	
 	@Autowired
 	PlayerRepository repo;
@@ -64,6 +74,22 @@ public class PlayerController {
 		}
 		System.out.println("Returning map");
 		return mv;
+	}
+	
+	@PutMapping("/updateBio")
+	public @ResponseBody ResponseEntity<String> updatePlayerBio(@RequestBody String body)
+	{
+		Map<String, Object> params = jsonParser.parseMap(body);
+		String username = (String) params.get("username");
+		String password = (String) params.get("password");
+		String bio = (String) params.get("bio");
+		Player player = repo.findByUsernameAndPassword(username, password);
+		if(player != null)
+		{
+			player.setBio(bio);
+			repo.save(player);
+		}
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/getPlayers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

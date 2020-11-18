@@ -53,12 +53,45 @@
 					<div style="color: white; font-weight: bold; font-size: 42pt;"><div th:text="${player.firstName + ' ' + player.lastName}"/></div>
 				</div>
 				<div class="center" style="top: 5% !important; margin-top: 5px; text-align:center; width: 100%; height: 80%; background-color: rgba(50, 50, 50, .5);">
-					<div style="color: white; float: left; padding: 25px; font-weight: bold; font-size: 32pt;">
-						Bio
-						<tr th:text="${player.bio}">
+					<div style="width: 100%; height: 100%; color: white; float: left; padding: 25px; font-weight: bold; font-size: 32pt;">
+						<div style="display: flex;">
+							<div style="text-align: left;">
+							Bio
+							</div>
+							<button id="doneEditingButton" onclick="submitBio()" style="float: left; background-color: rgba(76, 171, 63, 1) !important; width: 32pt; height: 32pt; display: none;">Save</button>
+							<input id="editButton" style="width: 32pt; height: 32pt;" type="image" src="img/edit-icon-2.png" onclick="enableBioEdit()"/>
+						</div>
+						<textarea id="bioInput" placeholder="Write something about yourself here!" disabled style="width: 90%; color: white; background-color: rgba(75, 75, 75, .75); height: 50%; resize: none; float: left;" th:field="*{player.bio}"></textarea>
 					</div>
 				</div>
 			</div>
         </div>
     </body>
 </html>
+<script>
+	function enableBioEdit()
+	{
+		document.getElementById("doneEditingButton").style.display = "block";
+		document.getElementById("editButton").style.display = "none";
+		document.getElementById("bioInput").disabled = false;
+	}
+	
+	function submitBio()
+	{
+		document.getElementById("doneEditingButton").style.display = "none";
+		document.getElementById("editButton").style.display = "block";
+		document.getElementById("bioInput").disabled = true;
+		
+		var user = Cookies.get('username');
+		var pass = Cookies.get('password');
+		
+		axios({
+		  method: 'put',
+		  url: '/updateBio',
+		  data: {
+			username: user,
+			password: pass,
+			bio: document.getElementById("bioInput").value
+		}});
+	}
+</script>
