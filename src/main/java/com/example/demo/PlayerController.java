@@ -7,13 +7,16 @@ import java.util.Map;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,39 +38,57 @@ public class PlayerController {
 	private static JsonParser jsonParser = JsonParserFactory.getJsonParser();
 	
 	@Autowired
-	PlayerRepository repo;
+	PlayerRepository playerRepo;
 		
+	@Autowired
+	FriendshipRepository friendshipRepo;
+	
+	@EventListener(ApplicationReadyEvent.class)
+	public void doSomethingAfterStartup() {
+	    Player player = playerRepo.findByUsernameAndPassword("naphid", "pass");
+	    List<Friendship> friendships = friendshipRepo.findFriendshipById(player.getpID());
+	    
+	    if(friendships != null && friendships.size() > 0)
+	    {
+	    	System.out.println("Friendship #1: " + friendships.get(0).getUserId1() + " " + friendships.get(0).getUserId2());
+	    }
+	}
+	
 	@RequestMapping("/addPlayer")
-	public String addPlayer(@RequestParam String fName, @RequestParam String lName, @RequestParam String username, @RequestParam String password, 
+	public String addPlayer(@RequestParam String fName, @RequestParam String lName,
+			@CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password, 
 			@RequestParam String address, @RequestParam String city, @RequestParam String zipcode, @RequestParam String state)
 	{
 		Player player = new Player(username, fName, lName, "", "", password, address, city, state, zipcode);
 		System.out.println("Creating player with username " + username + " and password " + password);
-		repo.save(player);
+		playerRepo.save(player);
 		return "login";
 	}
 	
 	@RequestMapping("/getPlayer")
-	public ModelAndView getPlayer(@RequestParam String username, @RequestParam String password)
+	public ModelAndView getPlayer(@CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
 	{
 		ModelAndView mv = new ModelAndView("profile");
-		Player player = repo.findByUsernameAndPassword(username, password);
+		Player player = playerRepo.findByUsernameAndPassword(username, password);
 		System.out.println("Searching for user with Username: " + username + " and Password: " + password);
 		System.out.println("Player is null: " + (player == null));
 		if(player != null)
 		{
 			mv.addObject("player", player);
-			int count= (int) repo.count();
+			int count= (int) playerRepo.count();
 			mv.addObject("count", count);
 		}
 		return mv;
 	}
 	
 	@RequestMapping("/map")
-	public ModelAndView getMap(@RequestParam String username, @RequestParam String password)
+	public ModelAndView getMap(@CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
 	{
 		ModelAndView mv = new ModelAndView("map");
-		Player 	player = repo.findByUsernameAndPassword(username, password);
+		Player 	player = playerRepo.findByUsernameAndPassword(username, password);
 		if(player != null)
 		{
 			mv.addObject("player", player);
@@ -77,17 +98,34 @@ public class PlayerController {
 	}
 	
 	@PutMapping("/updateBio")
-	public @ResponseBody ResponseEntity<String> updatePlayerBio(@RequestBody String body)
+	public @ResponseBody ResponseEntity<String> updatePlayerBio(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
 	{
 		Map<String, Object> params = jsonParser.parseMap(body);
-		String username = (String) params.get("username");
-		String password = (String) params.get("password");
+		// String username = (String) params.get("username");
+		// String password = (String) params.get("password");
 		String bio = (String) params.get("bio");
-		Player player = repo.findByUsernameAndPassword(username, password);
+		Player player = playerRepo.findByUsernameAndPassword(username, password);
 		if(player != null)
 		{
 			player.setBio(bio);
-			repo.save(player);
+			playerRepo.save(player);
+		}
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
+	@PutMapping("/addFriend")
+	public @ResponseBody ResponseEntity<String> addFriend(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
+	{
+		Map<String, Object> params = jsonParser.parseMap(body);
+		// String username = (String) params.get("username");
+		// String password = (String) params.get("password");
+		Player player = playerRepo.findByUsernameAndPassword(username, password);
+		if(player != null)
+		{
+
+			playerRepo.save(player);
 		}
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
@@ -96,7 +134,7 @@ public class PlayerController {
 	public @ResponseBody List<Player> getPlayers()
 	{
 		List<Player> players = new ArrayList<Player>();
-		Iterable<Player> iterable = repo.findAll();
+		Iterable<Player> iterable = playerRepo.findAll();
 	    iterable.forEach(players::add);
 	    return players;
 	}
@@ -105,7 +143,7 @@ public class PlayerController {
 	public ModelAndView getSport(@ModelAttribute("player") Player player)
 	{
 		ModelAndView mv = new ModelAndView("home");
-		repo.save(player);
+		playerRepo.save(player);
 		return mv;
 	}
 	
@@ -113,8 +151,8 @@ public class PlayerController {
 	public ModelAndView getZip(@ModelAttribute("player") Player player, SessionStatus status)
 	{
 		ModelAndView mv = new ModelAndView("home");
-		repo.save(player);
-		List<Player> playersNearby=repo.findBySport(player.getSport());
+		playerRepo.save(player);
+		List<Player> playersNearby=playerRepo.findBySport(player.getSport());
 		status.setComplete();
 		return mv;
 	}

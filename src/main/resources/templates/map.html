@@ -20,34 +20,26 @@
     </head>
     <body style="height: 100%;">
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
-				<form action="search" class="menuItem" name="login" onsubmit="return searchForm()" method="POST"><br>
-					<input type="text" name="username" id="searchUser" style="display: none;"/>
-					<input type="text" name="password" id="searchPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/search-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="getPlayer" class="menuItem" name="login" onsubmit="return profileForm()" method="POST"><br>
-					<input type="text" name="username" id="mapUser" style="display: none;"/>
-					<input type="text" name="password" id="mapPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/account-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="" class="menuItem selected" name="login" onsubmit="return mapForm()" method="POST"><br>
-					<input type="text" name="username" id="profileUser" style="display: none;"/>
-					<input type="text" name="password" id="profilePass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/map-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="messages" class="menuItem" name="login" onsubmit="return messagesForm()" method="POST"><br>
-					<input type="text" name="username" id="messagesUser" style="display: none;"/>
-					<input type="text" name="password" id="messagesPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/messages-icon.png" alt="" class="center">
-					</button>
-				</form>
+				<a href="/search">
+				<div class="menuItem">
+					<img src="img/search-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/getPlayer">
+				<div class="menuItem">
+					<img src="img/account-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/map">
+				<div class="menuItem">
+					<img src="img/map-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/messages">
+				<div class="menuItem">
+					<img src="img/messages-icon.png" alt="" class="center">
+				</div>
+				</a>
 			</div>
 			<div style="width:90%; height: 100%; margin-left: 10%;">
 				<div style="font-size: 42pt; font-weight:bold; color: white; padding: 25px;">Map</div>
@@ -56,10 +48,11 @@
 						<div id="map"></div>
 					</div>
 					<div id="pointDetails" style="display: none; margin-left: 52.5%; color: white; border-radius: 5%; width:40%; height: 80%; background-color: rgba(50, 50, 50, .75);">
-						<div style="text-align: center; font-weight: bold; padding: 2.5%;">
+						<div style="text-align: center; font-weight: bold; padding: 2.5%; height: 95%;">
 							<div id="pointTitle" style="font-size: 32pt;">
 								Map Point Title
 							</div>
+							<button style="width: 10%; height: 5%; background-color: rgba(76, 171, 63, 1) !important; margin: 0 auto;">Add Friend</button>
 							<div id="pointDescription" style="margin-top: 10px; font-size: 18pt; text-align: left; font-weight: normal;">
 								Map point description
 							</div>
@@ -118,8 +111,12 @@
 						document.getElementById("pointDetails").style.display = "block";
 						var playerData = pointInfo["pointData"];
 						console.log("P Data: " + playerData);
+						var bioText = "No bio.";
+						if(playerData["bio"] != null && playerData["bio"] != "")
+							bioText = playerData["bio"];
 						document.getElementById("pointTitle").innerHTML = playerData["firstName"] + " " + playerData["lastName"];
-						document.getElementById("pointDescription").innerHTML = playerData["bio"];
+						document.getElementById("pointDescription").innerHTML = "<div>Bio</div>" + bioText;
+						// document.getElementById("pointDescription").innerHTML += "<button style='position: absolute; bottom: 0;'>Add Friend</button>";
 						console.log("Feature clicked: " + feature["values_"]["name"]);
 					}
 				}
@@ -134,8 +131,9 @@
 		.then(function (response) {
 			console.log("Players: " + response);
 			response["data"].forEach(function(player) {
+				console.log(player);
 				// For each user that is not the current one
-				if(player["username"] != user && player["password"] != pass)
+				if(player["username"] != user)
 				{
 					placeIconAtAddress(player["zipCode"], player["address"], player["city"], player["state"], 'img/account-icon-black.png', "Player", player, false);
 				}

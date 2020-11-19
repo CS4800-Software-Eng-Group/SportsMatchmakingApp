@@ -14,36 +14,27 @@
 		<link rel="stylesheet" href="css/main.css">
     </head>
     <body style="height: 100%;">
-
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
-				<form action="search" class="menuItem" name="login" onsubmit="return searchForm()" method="POST"><br>
-					<input type="text" name="username" id="searchUser" style="display: none;"/>
-					<input type="text" name="password" id="searchPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/search-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="" class="menuItem selected" name="login" onsubmit="return profileForm()" method="POST"><br>
-					<input type="text" name="username" id="mapUser" style="display: none;"/>
-					<input type="text" name="password" id="mapPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/account-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="map" class="menuItem" name="login" onsubmit="return mapForm()" method="POST"><br>
-					<input type="text" name="username" id="profileUser" style="display: none;"/>
-					<input type="text" name="password" id="profilePass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/map-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="messages" class="menuItem" name="login" onsubmit="return messagesForm()" method="POST"><br>
-					<input type="text" name="username" id="messagesUser" style="display: none;"/>
-					<input type="text" name="password" id="messagesPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/messages-icon.png" alt="" class="center">
-					</button>
-				</form>
+				<a href="/search">
+				<div class="menuItem">
+					<img src="img/search-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/getPlayer">
+				<div class="menuItem">
+					<img src="img/account-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/map">
+				<div class="menuItem">
+					<img src="img/map-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/messages">
+				<div class="menuItem">
+					<img src="img/messages-icon.png" alt="" class="center">
+				</div>
+				</a>
 			</div>
 			<div style="width:90%; margin-left: 10%;">
 				<div class="center" style="top: 5% !important; text-align:center;">
@@ -58,16 +49,14 @@
 							<div style="text-align: left;">
 							Bio
 							</div>
-							<button id="doneEditingButton" onclick="submitBio()" style="float: left; background-color: rgba(76, 171, 63, 1) !important; width: 32pt; height: 32pt; display: none; border-radius: 20%; margin-left: 10px;">Save</button>
+							<button id="doneEditingButton" onclick="submitBio()" style="background-color: rgba(76, 171, 63, 1) !important; width: 32pt; height: 32pt; display: none; border-radius: 20%; margin-left: 10px;">Save</button>
 							<input id="editButton" style="width: 32pt; height: 32pt;" type="image" src="img/edit-icon-2.png" onclick="enableBioEdit()"/>
 						</div>
 						<textarea id="bioInput" placeholder="Write something about yourself here!" disabled style="width: 90%; color: white; background-color: rgba(75, 75, 75, .75); height: 50%; resize: none; float: left;" th:field="*{player.bio}"></textarea>
-						Friends<br>
-						ksdfajkls<br>
-						kdsjfklsfd<br>
-						<br>kfsjakfjsafklsa
-						<br>kfdjlkjalsfjklsdajkf
-						<br>ksjakfjaslfjkl
+						<br>
+						<div style="float: left; clear: left; margin-top: 10px;">
+						Friends
+						</div>
 					</div>
 				</div>
 			</div>

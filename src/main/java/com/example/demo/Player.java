@@ -12,7 +12,7 @@ public class Player {
 	/**
 	 * Player's unique ID	
 	 */
-	private long pID;
+	private int pID;
 
 	/**
 	 * Player's first name
@@ -100,7 +100,7 @@ public class Player {
 	/**
 	 * @return the Player's unique ID
 	 */
-	public long getpID() {
+	public int getpID() {
 		return this.pID;
 	}
 	
