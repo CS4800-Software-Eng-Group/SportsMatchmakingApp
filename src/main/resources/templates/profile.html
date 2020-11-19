@@ -65,17 +65,16 @@
 <script>
 	window.onload = function ()
 	{
-		axios.get('/checkFriendshipByUsernames', 
+		axios.get('/getUserFriends', 
 		{ 
 			params: { 
-				firstUser: user,
-				secondUser: playerData["username"]
+				username: Cookies.get('username')
 			}}).then(function (response) {
 				console.log(response["data"]);
 				
 				response["data"].forEach(function(friendship) {
-
-			});
+					console.log(friendship);
+				});
 			}).catch(function (error) {
 				console.log(error);
 			}).then(function () {

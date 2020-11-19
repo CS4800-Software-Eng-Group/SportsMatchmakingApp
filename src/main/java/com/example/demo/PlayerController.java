@@ -116,16 +116,29 @@ public class PlayerController {
 	
 	@RequestMapping(value = "/getUserFriends", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<Friendship> getUserFriends(@RequestParam String username)
+	public List<Player> getUserFriends(@RequestParam String username)
 	{
 		Player user = playerRepo.findByUsername(username);
 		
+		List<Player> userFriends = new ArrayList<Player>();
+		
 		if(user != null)
 		{
-			return friendshipRepo.findFriendshipById(user.getUsername());
+			List<Friendship> friendships =  friendshipRepo.findFriendshipById(user.getUsername());
+			for(Friendship friendship : friendships)
+			{
+				String fUsername = "";
+				if(!friendship.getUserId1().equals(username))
+				{
+					fUsername = friendship.getUserId1();
+				}
+				else
+					fUsername = friendship.getUserId2();
+				userFriends.add(playerRepo.findByUsername(fUsername));
+			}
 		}
 		
-		return new ArrayList<Friendship>();
+		return userFriends;
 	}
 	
 	@PutMapping("/updateBio")
