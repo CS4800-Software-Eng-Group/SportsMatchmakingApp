@@ -45,24 +45,26 @@ public class PlayerController {
 	
 	@EventListener(ApplicationReadyEvent.class)
 	public void doSomethingAfterStartup() {
-	    Player player = playerRepo.findByUsernameAndPassword("naphid", "pass");
-	    List<Friendship> friendships = friendshipRepo.findFriendshipById(player.getpID());
-	    
-	    if(friendships != null && friendships.size() > 0)
-	    {
-	    	System.out.println("Friendship #1: " + friendships.get(0).getUserId1() + " " + friendships.get(0).getUserId2());
-	    }
+
 	}
 	
 	@RequestMapping("/addPlayer")
 	public String addPlayer(@RequestParam String fName, @RequestParam String lName,
-			@CookieValue(value = "username", defaultValue = "") String username,
-			@CookieValue(value = "password", defaultValue = "") String password, 
+			@RequestParam String username,
+			@RequestParam String password, 
 			@RequestParam String address, @RequestParam String city, @RequestParam String zipcode, @RequestParam String state)
 	{
-		Player player = new Player(username, fName, lName, "", "", password, address, city, state, zipcode);
-		System.out.println("Creating player with username " + username + " and password " + password);
-		playerRepo.save(player);
+		if(!playerRepo.existsById(username))
+		{
+			Player player = new Player(username, fName, lName, "", "", password, address, city, state, zipcode);
+			System.out.println("Creating player with username " + username + " and password " + password);
+			playerRepo.save(player);
+		}
+		else
+		{
+			// TODO: Throw error if username already exists
+		}
+		
 		return "login";
 	}
 	
@@ -106,10 +108,24 @@ public class PlayerController {
 		
 		if(user1 != null && user2 != null)
 		{
-			return friendshipRepo.findFriendshipWithIdPair(user1.getpID(), user2.getpID()) == null;
+			return friendshipRepo.findFriendshipWithIdPair(user1.getUsername(), user2.getUsername()) != null;
 		}
 		
 		return false;
+	}
+	
+	@RequestMapping(value = "/getUserFriends", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Friendship> getUserFriends(@RequestParam String username)
+	{
+		Player user = playerRepo.findByUsername(username);
+		
+		if(user != null)
+		{
+			return friendshipRepo.findFriendshipById(user.getUsername());
+		}
+		
+		return new ArrayList<Friendship>();
 	}
 	
 	@PutMapping("/updateBio")
@@ -138,18 +154,18 @@ public class PlayerController {
 		Player otherUser = playerRepo.findByUsername((String) params.get("otherUser"));
 		if(player != null && otherUser != null)
 		{
-			if(player.getpID() == otherUser.getpID())
+			if(player.getUsername().equals(otherUser.getUsername()))
 				return new ResponseEntity<String>("Users cannot friend themselves.", HttpStatus.BAD_REQUEST); 
 			
-			for(Friendship friendship : friendshipRepo.findFriendshipById(player.getpID()))
+			for(Friendship friendship : friendshipRepo.findFriendshipById(player.getUsername()))
 			{
-				if(friendship.getUserId1() == otherUser.getpID() || friendship.getUserId2() == otherUser.getpID())
+				if(friendship.getUserId1().equals(otherUser.getUsername()) || friendship.getUserId2().equals(otherUser.getUsername()))
 				{
 					return new ResponseEntity<String>("Users are already friends.", HttpStatus.BAD_REQUEST); 
 				}
 			}
 			
-			friendshipRepo.save(new Friendship(player.getpID(), otherUser.getpID()));
+			friendshipRepo.save(new Friendship(player.getUsername(), otherUser.getUsername()));
 		}
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
@@ -164,11 +180,11 @@ public class PlayerController {
 		Player otherUser = playerRepo.findByUsername((String) params.get("otherUser"));
 		if(player != null && otherUser != null)
 		{
-			if(player.getpID() == otherUser.getpID())
+			if(player.getUsername().equals(otherUser.getUsername()))
 				return new ResponseEntity<String>("Users cannot unfriend themselves.", HttpStatus.BAD_REQUEST); 
 			
 			System.out.println("Attempting to unfriend " + player.getUsername() + " and " + otherUser.getUsername());
-			Friendship friendship = friendshipRepo.findFriendshipWithIdPair(player.getpID(), otherUser.getpID());
+			Friendship friendship = friendshipRepo.findFriendshipWithIdPair(player.getUsername(), otherUser.getUsername());
 			if(friendship != null)
 			{
 				friendshipRepo.deleteById(friendship.getFriendshipId());

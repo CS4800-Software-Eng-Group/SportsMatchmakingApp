@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface PlayerRepository extends CrudRepository<Player, Integer> {
+public interface PlayerRepository extends CrudRepository<Player, String> {
 	Player findByUsernameAndPassword(String username, String password);
 	Player findByUsername(String username);
 	List<Player> findBySport(String sport);

@@ -122,7 +122,10 @@
 								firstUser: user,
 								secondUser: playerData["username"]
 						}}).then(function (response) {
-							if(response["data"] == "false")
+							console.log("Data: ");
+							console.log(response["data"]);
+							console.log(response);
+							if(response["data"] == false)
 								setInteractionMode("Add Friend");
 							else
 								setInteractionMode("Remove Friend");

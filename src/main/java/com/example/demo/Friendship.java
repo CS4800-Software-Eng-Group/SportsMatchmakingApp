@@ -3,19 +3,21 @@ package com.example.demo;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
+@Table(name = "FRIENDSHIP")
 public class Friendship
 {
 	@Id @GeneratedValue
 	private int friendshipId;
 	
-	private int userId1;
+	private String userId1;
 	
-	private int userId2;
+	private String userId2;
 	
-	public Friendship(int userId1, int userId2)
+	public Friendship(String userId1, String userId2)
 	{
 		this.userId1 = userId1;
 		this.userId2 = userId2;
@@ -26,22 +28,22 @@ public class Friendship
 		
 	}
 	
-	public void setUserId1(int id)
+	public void setUserId1(String id)
 	{
 		this.userId1 = id;
 	}
 	
-	public int getUserId1()
+	public String getUserId1()
 	{
 		return userId1;
 	}
 	
-	public void setUserId2(int id)
+	public void setUserId2(String id)
 	{
 		this.userId2 = id;
 	}
 	
-	public int getUserId2()
+	public String getUserId2()
 	{
 		return userId2;
 	}

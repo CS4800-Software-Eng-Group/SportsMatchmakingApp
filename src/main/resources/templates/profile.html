@@ -63,6 +63,27 @@
     </body>
 </html>
 <script>
+	window.onload = function ()
+	{
+		axios.get('/checkFriendshipByUsernames', 
+		{ 
+			params: { 
+				firstUser: user,
+				secondUser: playerData["username"]
+			}}).then(function (response) {
+				console.log(response["data"]);
+				
+				response["data"].forEach(function(friendship) {
+
+			});
+			}).catch(function (error) {
+				console.log(error);
+			}).then(function () {
+				
+			});
+		
+	}
+
 	function enableBioEdit()
 	{
 		document.getElementById("doneEditingButton").style.display = "block";

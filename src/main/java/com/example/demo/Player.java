@@ -8,12 +8,6 @@ import javax.persistence.Transient;
 @Entity
 public class Player {
 	
-	@Id @GeneratedValue
-	/**
-	 * Player's unique ID	
-	 */
-	private int pID;
-
 	/**
 	 * Player's first name
 	 */
@@ -32,6 +26,7 @@ public class Player {
 	/**
 	 * Player's password
 	 */
+	@Id
 	private String username;
 	
 	/**
@@ -95,20 +90,6 @@ public class Player {
 	public Player()
 	{
 		
-	}
-	
-	/**
-	 * @return the Player's unique ID
-	 */
-	public int getpID() {
-		return this.pID;
-	}
-	
-	/**
-	 * @param pID the Player's unique ID to be set
-	 */
-	public void setpID(int pID) {
-		this.pID=pID;
 	}
 
 	/**
@@ -236,10 +217,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [pID=" + pID + ", fName=" + firstName + ", username=" + username + ", sport=" + sport + ", zipCode="
+		return "Player [fName=" + firstName + ", username=" + username + ", sport=" + sport + ", zipCode="
 				+ zipCode + "]";
 	}
-
-
-
 }
