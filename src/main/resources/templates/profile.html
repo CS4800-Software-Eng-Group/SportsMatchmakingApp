@@ -54,10 +54,10 @@
 						</div>
 						<textarea id="bioInput" placeholder="Write something about yourself here!" disabled style="width: 90%; color: white; background-color: rgba(75, 75, 75, .75); height: 50%; resize: none; float: left;" th:field="*{player.bio}"></textarea>
 						<br>
-						<div style="margin-top: 10px; width: 100%;">
+						<div style="margin-top: 10px; width: 90%;">
 							<div style="float: left; clear: left; margin-top: 10px;">Friends</div>
-							<div style="clear: left; background-color: rgba(75, 75, 75, .75); width: 90%; border: 2px solid grey; min-height: 100px;">
-							
+							<div id="friendsList" style="padding: 2.5%; clear: left; background-color: rgba(75, 75, 75, .75); width: 90%; border: 1px solid #636363; min-height: 100px;">
+								
 							</div>
 						</div>
 					</div>
@@ -75,8 +75,13 @@
 			}}).then(function (response) {
 				console.log(response["data"]);
 				
+				var friendsList = document.getElementById("friendsList");
+				friendsList.innerHTML = "";
 				response["data"].forEach(function(friendship) {
-					console.log(friendship);
+					friendsList.innerHTML += "<div class='friendListEntry'><div style='margin-right: 10px;'>" + friendship["firstName"] 
+									+ " " + friendship["lastName"] 
+									+ "</div><div style='color: #bdbdbd; font-size: 24pt; margin-right: 10px;'>(@" + friendship["username"] 
+									+ ")</div><button style='margin-top: 10px; width: 15%; height: 30pt; background-color: rgba(227, 61, 0, 1);' onclick='removeFriend()'>Remove Friend</button></div>"
 				});
 			}).catch(function (error) {
 				console.log(error);
@@ -107,3 +112,14 @@
 		}});
 	}
 </script>
+<style>
+.friendListEntry {
+	text-align: left;
+	display: flex;
+	background-color: rgba(82, 82, 82, .75);
+	border: 1px solid #636363;
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 28pt;
+}
+</style>
