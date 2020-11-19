@@ -49,10 +49,10 @@
 					</div>
 					<div id="pointDetails" style="display: none; margin-left: 52.5%; color: white; border-radius: 5%; width:40%; height: 80%; background-color: rgba(50, 50, 50, .75);">
 						<div style="text-align: center; font-weight: bold; padding: 2.5%; height: 95%;">
-							<div id="pointTitle" style="font-size: 32pt;">
+							<div id="pointTitle" style="font-size: 32pt; margin-bottom: 10px;">
 								Map Point Title
 							</div>
-							<button id="pointInteractionButton" style="display: none; height: 5%; width: 25%; background-color: rgba(76, 171, 63, 1); margin: 0 auto; border-radius: 10%;"></button>
+							<button id="pointInteractionButton" style="height: 5%; width: 25%; background-color: rgba(76, 171, 63, 1); margin: 0 auto; border-radius: 5%;"></button>
 							<div id="pointDescription" style="margin-top: 10px; font-size: 18pt; text-align: left; font-weight: normal;">
 								Map point description
 							</div>
@@ -139,8 +139,9 @@
 						selectedPointData = playerData;
 						if(playerData["bio"] != null && playerData["bio"] != "")
 							bioText = playerData["bio"];
-						document.getElementById("pointTitle").innerHTML = playerData["firstName"] + " " + playerData["lastName"];
-						document.getElementById("pointDescription").innerHTML = "<div>Bio</div>" + bioText;
+						document.getElementById("pointTitle").innerHTML = '<div style="font-size: 42pt;">' + playerData["firstName"] + " " + playerData["lastName"] 
+																			+ '</div><div style="color: #bdbdbd; font-size: 30pt;">@' + playerData["username"] + '</div>';
+						document.getElementById("pointDescription").innerHTML = "<div style='font-weight: bold; font-size: 28pt;'>Bio</div>" + bioText;
 						// document.getElementById("pointDescription").innerHTML += "<button style='position: absolute; bottom: 0;'>Add Friend</button>";
 						console.log("Feature clicked: " + feature["values_"]["name"]);
 					}
@@ -257,7 +258,7 @@
 	function setInteractionMode(mode)
 	{
 		var interactionButton = document.getElementById("pointInteractionButton");
-		interactionButton.style.display = "block";
+		interactionButton.style.display = "inline";
 		if(mode == "Add Friend")
 		{
 			interactionButton.onclick = addFriend;
