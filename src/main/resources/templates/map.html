@@ -31,7 +31,7 @@
 				</div>
 				</a>
 				<a href="/map">
-				<div class="menuItem">
+				<div class="menuItem selected">
 					<img src="img/map-icon.png" alt="" class="center">
 				</div>
 				</a>
@@ -52,7 +52,7 @@
 							<div id="pointTitle" style="font-size: 32pt;">
 								Map Point Title
 							</div>
-							<button style="width: 10%; height: 5%; background-color: rgba(76, 171, 63, 1) !important; margin: 0 auto;">Add Friend</button>
+							<button id="pointInteractionButton" style="display: none; height: 5%; max-width: 25%; background-color: rgba(76, 171, 63, 1); margin: 0 auto; border-radius: 10%;"></button>
 							<div id="pointDescription" style="margin-top: 10px; font-size: 18pt; text-align: left; font-weight: normal;">
 								Map point description
 							</div>
@@ -68,9 +68,14 @@
 	var markerLayer;
 	var vectorSource;
 	var markers = [];
+	var selectedPointData;
+	var user;
+	var pass;
 	
 	window.onload = function ()
 	{
+		user = Cookies.get('username');
+		pass = Cookies.get('password');
 		var mapElement = document.getElementById('mapContainer');
 		var display = mapElement.style.display;
 		mapElement.style.display = 'none';
@@ -100,18 +105,35 @@
 		});
 		
 		map.on('click', function(evt) {
+			setInteractionMode("None");
+			document.getElementById("pointDetails").style.display = "none";
 			var features = map.forEachFeatureAtPixel(evt.pixel,
 				function(feature) {
-					document.getElementById("pointDetails").style.display = "none";
-					console.log(feature);
 					var pointInfo = feature["values_"];
 					console.log('Point info: ' + pointInfo);
 					if(pointInfo["type"] == "Player")
 					{
 						document.getElementById("pointDetails").style.display = "block";
 						var playerData = pointInfo["pointData"];
-						console.log("P Data: " + playerData);
+						
+						axios.get('/checkFriendshipByUsernames', 
+						{ 
+							params: { 
+								firstUser: user,
+								secondUser: playerData["username"]
+						}}).then(function (response) {
+							if(response["data"] == "false")
+								setInteractionMode("Add Friend");
+							else
+								setInteractionMode("Remove Friend");
+						}).catch(function (error) {
+							console.log(error);
+						}).then(function () {
+							
+						});
+						
 						var bioText = "No bio.";
+						selectedPointData = playerData;
 						if(playerData["bio"] != null && playerData["bio"] != "")
 							bioText = playerData["bio"];
 						document.getElementById("pointTitle").innerHTML = playerData["firstName"] + " " + playerData["lastName"];
@@ -125,8 +147,6 @@
 			console.log(features);
 		});
 		
-		var user = Cookies.get('username');
-		var pass = Cookies.get('password');
 		axios.get('/getPlayers')
 		.then(function (response) {
 			console.log("Players: " + response);
@@ -148,7 +168,7 @@
 		var address = document.getElementById("playerAddress").value;
 		var city = document.getElementById("playerCity").value;
 		var state = document.getElementById("playerState").value;
-		var homeIcon = placeIconAtAddress(zip, address, city, state, 'img/home-icon-black.png', 'Home', '', true);
+		placeIconAtAddress(zip, address, city, state, 'img/home-icon-black.png', 'Home', '', true);
 	};
 	
 	window.onresize = function()
@@ -229,5 +249,50 @@
 			return homePoint;
 		});
 		return homePoint;
+	}
+	
+	function setInteractionMode(mode)
+	{
+		var interactionButton = document.getElementById("pointInteractionButton");
+		interactionButton.style.display = "block";
+		if(mode == "Add Friend")
+		{
+			interactionButton.onclick = addFriend;
+			interactionButton.style.backgroundColor = "rgba(76, 171, 63, 1)";
+			interactionButton.textContent = 'Add Friend';
+		}
+		else if(mode == "Remove Friend")
+		{
+			interactionButton.onclick = removeFriend;
+			interactionButton.style.backgroundColor = "rgba(227, 61, 0, 1)";
+			interactionButton.textContent = "Remove Friend";
+		}
+		else
+		{
+			interactionButton.style.display = "none";
+			interactionButton.textContent = "";
+		}
+	}
+	
+	function addFriend()
+	{
+		axios({
+		  method: 'put',
+		  url: '/addFriend',
+		  data: {
+			otherUser: selectedPointData["username"]
+		}});
+		setInteractionMode("Remove Friend");
+	}
+	
+	function removeFriend()
+	{	
+		axios({
+		  method: 'put',
+		  url: '/removeFriend',
+		  data: {
+			otherUser: selectedPointData["username"]
+		}});
+		setInteractionMode("Add Friend");
 	}
 </script>

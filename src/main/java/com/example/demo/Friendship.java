@@ -45,4 +45,14 @@ public class Friendship
 	{
 		return userId2;
 	}
+	
+	public void setFriendshipId(int id)
+	{
+		friendshipId = id;
+	}
+	
+	public int getFriendshipId()
+	{
+		return friendshipId;
+	}
 }

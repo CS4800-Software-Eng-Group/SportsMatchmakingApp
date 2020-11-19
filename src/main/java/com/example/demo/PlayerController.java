@@ -97,6 +97,21 @@ public class PlayerController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/checkFriendshipByUsernames", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Boolean checkFriendshipByUsernames(@RequestParam String firstUser, @RequestParam String secondUser)
+	{
+		Player user1 = playerRepo.findByUsername(firstUser);
+		Player user2 = playerRepo.findByUsername(secondUser);
+		
+		if(user1 != null && user2 != null)
+		{
+			return friendshipRepo.findFriendshipWithIdPair(user1.getpID(), user2.getpID()) == null;
+		}
+		
+		return false;
+	}
+	
 	@PutMapping("/updateBio")
 	public @ResponseBody ResponseEntity<String> updatePlayerBio(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
 			@CookieValue(value = "password", defaultValue = "") String password)
@@ -119,13 +134,47 @@ public class PlayerController {
 			@CookieValue(value = "password", defaultValue = "") String password)
 	{
 		Map<String, Object> params = jsonParser.parseMap(body);
-		// String username = (String) params.get("username");
-		// String password = (String) params.get("password");
 		Player player = playerRepo.findByUsernameAndPassword(username, password);
-		if(player != null)
+		Player otherUser = playerRepo.findByUsername((String) params.get("otherUser"));
+		if(player != null && otherUser != null)
 		{
-
-			playerRepo.save(player);
+			if(player.getpID() == otherUser.getpID())
+				return new ResponseEntity<String>("Users cannot friend themselves.", HttpStatus.BAD_REQUEST); 
+			
+			for(Friendship friendship : friendshipRepo.findFriendshipById(player.getpID()))
+			{
+				if(friendship.getUserId1() == otherUser.getpID() || friendship.getUserId2() == otherUser.getpID())
+				{
+					return new ResponseEntity<String>("Users are already friends.", HttpStatus.BAD_REQUEST); 
+				}
+			}
+			
+			friendshipRepo.save(new Friendship(player.getpID(), otherUser.getpID()));
+		}
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
+	@PutMapping("/removeFriend")
+	public @ResponseBody ResponseEntity<String> removeFriend(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
+	{
+		System.out.println("Remove friend body: " + body);
+		Map<String, Object> params = jsonParser.parseMap(body);
+		Player player = playerRepo.findByUsernameAndPassword(username, password);
+		Player otherUser = playerRepo.findByUsername((String) params.get("otherUser"));
+		if(player != null && otherUser != null)
+		{
+			if(player.getpID() == otherUser.getpID())
+				return new ResponseEntity<String>("Users cannot unfriend themselves.", HttpStatus.BAD_REQUEST); 
+			
+			System.out.println("Attempting to unfriend " + player.getUsername() + " and " + otherUser.getUsername());
+			Friendship friendship = friendshipRepo.findFriendshipWithIdPair(player.getpID(), otherUser.getpID());
+			if(friendship != null)
+			{
+				friendshipRepo.deleteById(friendship.getFriendshipId());
+			}
+			else
+				return new ResponseEntity<String>("Users are not friends so they cannot be unfriended.", HttpStatus.BAD_REQUEST); 
 		}
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}

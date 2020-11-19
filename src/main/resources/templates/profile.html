@@ -21,7 +21,7 @@
 				</div>
 				</a>
 				<a href="/getPlayer">
-				<div class="menuItem">
+				<div class="menuItem selected">
 					<img src="img/account-icon.png" alt="" class="center">
 				</div>
 				</a>
@@ -76,15 +76,10 @@
 		document.getElementById("editButton").style.display = "block";
 		document.getElementById("bioInput").disabled = true;
 		
-		var user = Cookies.get('username');
-		var pass = Cookies.get('password');
-		
 		axios({
 		  method: 'put',
 		  url: '/updateBio',
 		  data: {
-			username: user,
-			password: pass,
 			bio: document.getElementById("bioInput").value
 		}});
 	}
