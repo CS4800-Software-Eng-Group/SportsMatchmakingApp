@@ -142,7 +142,7 @@ public class PlayerController {
 	}
 	
 	@PutMapping("/updateBio")
-	public @ResponseBody ResponseEntity<String> updatePlayerBio(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
+	public	 @ResponseBody ResponseEntity<String> updatePlayerBio(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
 			@CookieValue(value = "password", defaultValue = "") String password)
 	{
 		Map<String, Object> params = jsonParser.parseMap(body);
