@@ -7,14 +7,16 @@
 <body>
 	<div class = "bg-img"></div>
 	<form name="register" action="addPlayer" onsubmit="return validateForm()" class="container" method="post">
+
+		<img src="img/SpringSports.png" class="responsive" style="height: 100px;" alt="Spring Sports">
 		<h1>Register</h1>
-		
+
 		<label for="fName"><b>First Name</b></label>
 		<input type="text" name="fName" required>
 
 		<label for="lName"><b>Last name</b></label>
 		<input type="text" name="lName" required>
-		
+
 		<label for="username"><b>Username</b></label>
 		<input type="text" name="username" required>
 
@@ -23,16 +25,16 @@
 
 		<label for="address"><b>Address</b></label>
 		<input type="text" name="address" required>
-		
+
 		<label for="city"><b>City</b></label>
-		<input type="text" name="city" required>	
-		
+		<input type="text" name="city" required>
+
 		<div style="display:table;">
 			<div style="display:table-cell; width: 50% !important; padding-right: 10px;">
 				<label for="zipcode"><b>Zip Code</b></label>
 				<input class="col" type="text" name="zipcode" required>
 			</div>
-			
+
 			<div style="display:table-cell; width: 50% !important;">
 				<label for="state"><b>State</b></label>
 				<select type="dropdown" name="state" style="width: 100%;" required>
@@ -90,19 +92,20 @@
 				</select>
 			</div>
 		</div>
-		
+
 		<div id="error" style="color:red; margin-top 5px; margin-bottom: 5px; font-weight: italic;"></div>
 		<button type="submit" class="btn">Register</button>
 	</form>
 </body>
 </html>
 <style>
+
 body, html {
-	margin: 0;
-	padding: 0;
+		margin: 0;
+		padding: 0;
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
-	overflow: hidden;
+		overflow-x: hidden;
 }
 
 label {
@@ -113,15 +116,20 @@ label {
     box-sizing: border-box;
 }
 
+.responsive{
+  max-width: 100%;
+  height: auto;
+}
+
 .bg-img {
 	background-image: url('./img/FastWalking.jpg');
 	-webkit-filter: blur(8px);
-		
+
 	width: 100vw;
 	height: 100vh;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-size: cover;	
+	background-size: cover;
 }
 
 select {
@@ -132,25 +140,30 @@ select {
 .container {
 	  background-color: rgb(0,0,0); /* Fallback color */
 	  background-color: rgba(0,0,0, 0.8); /* Black w/opacity/see-through */
+		background-size: auto;
+		border-radius: 25px;
 	  color: white;
 	  font-weight: bold;
-	  position: absolute;
+	  position: fixed;
 	  top: 50%;
 	  left: 50%;
 	  transform: translate(-50%, -50%);
 	  z-index: 2;
-	  width: 25%;
+		width: 25%;
+		height: auto;
 	  padding: 20px;
+		padding-top: 10px;
 	  text-align: center;
 }
 
 /*Full-width input fields */
 input[type=text], input[type=text], input[type=password]{
     width: 100%;
-    padding:15px;
+    padding:10px;
     margin: 5px 0 22px 0;
     border: none;
     background:  #f1f1f1;
+		resize: vertical;
 }
 
 input[type=text]:focus, input[type=text]:focus, input[type=password]:focus{
@@ -182,7 +195,7 @@ function validateForm() {
 		var city = form["city"].value;
 		var state = form["state"].value;
 		var zip = form["zipcode"].value;
-		
+
 		console.log('Looking for address at: ' + address + ", " + city + ", " + state + " " + zip);
 		axios.get('https://nominatim.openstreetmap.org/search?q=' + address + ',' + city + '&format=geocodejson&postalcode=' + zip + '&countrycodes=US')
 		.then(function (response) {
@@ -195,10 +208,10 @@ function validateForm() {
 		}).catch(function (error) {
 			console.log("Error: " + error);
 		}).then(function () {
-			
+
 		});
 	}
-	catch 
+	catch
 	{
 		console.log("Error :(");
 		return false;

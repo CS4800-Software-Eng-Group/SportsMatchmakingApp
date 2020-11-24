@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 		<link rel="stylesheet" href="css/main.css">
-		
+
 		<input type="hidden" id="playerZipCode" th:value="${player.zipCode}"/>
 		<input type="hidden" id="playerAddress" th:value="${player.address}"/>
 		<input type="hidden" id="playerCity" th:value="${player.city}"/>
@@ -20,11 +20,16 @@
     </head>
     <body style="height: 100%;">
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
+
+        <a href="#">
+          <img src="img/SpringSports.png" alt="Spring Sports" class="logo-img"></a>
+
 				<a href="/search">
 				<div class="menuItem">
 					<img src="img/search-icon.png" alt="" class="center">
 				</div>
 				</a>
+
 				<a href="/getPlayer">
 				<div class="menuItem">
 					<img src="img/account-icon.png" alt="" class="center">
@@ -71,7 +76,7 @@
 	var selectedPointData;
 	var user;
 	var pass;
-	
+
 	window.onload = function ()
 	{
 		user = Cookies.get('username');
@@ -82,13 +87,13 @@
 		mapElement.style.height = (mapElement.parentElement.offsetHeight) + "px";
 		document.getElementById('map').style.height = "80%";
 		mapElement.style.display = display;
-		
+
 		vectorSource = new ol.source.Vector({});
-		
+
    		map = new ol.Map({
         target: 'map',
 		controls: [
-		
+
 		],
         layers: [
 			new ol.layer.Tile({
@@ -103,7 +108,7 @@
           zoom: 4
         })
 		});
-		
+
 		map.on('click', function(evt) {
 			setInteractionMode("None");
 			document.getElementById("pointDetails").style.display = "none";
@@ -115,10 +120,10 @@
 					{
 						document.getElementById("pointDetails").style.display = "block";
 						var playerData = pointInfo["pointData"];
-						
-						axios.get('/checkFriendshipByUsernames', 
-						{ 
-							params: { 
+
+						axios.get('/checkFriendshipByUsernames',
+						{
+							params: {
 								firstUser: user,
 								secondUser: playerData["username"]
 						}}).then(function (response) {
@@ -132,14 +137,14 @@
 						}).catch(function (error) {
 							console.log(error);
 						}).then(function () {
-							
+
 						});
-						
+
 						var bioText = "No bio.";
 						selectedPointData = playerData;
 						if(playerData["bio"] != null && playerData["bio"] != "")
 							bioText = playerData["bio"];
-						document.getElementById("pointTitle").innerHTML = '<div style="font-size: 42pt;">' + playerData["firstName"] + " " + playerData["lastName"] 
+						document.getElementById("pointTitle").innerHTML = '<div style="font-size: 42pt;">' + playerData["firstName"] + " " + playerData["lastName"]
 																			+ '</div><div style="color: #bdbdbd; font-size: 30pt;">@' + playerData["username"] + '</div>';
 						document.getElementById("pointDescription").innerHTML = "<div style='font-weight: bold; font-size: 28pt;'>Bio</div>" + bioText;
 						// document.getElementById("pointDescription").innerHTML += "<button style='position: absolute; bottom: 0;'>Add Friend</button>";
@@ -147,10 +152,10 @@
 					}
 				}
 			);
-			
+
 			console.log(features);
 		});
-		
+
 		axios.get('/getPlayers')
 		.then(function (response) {
 			console.log("Players: " + response);
@@ -165,16 +170,16 @@
 		}).catch(function (error) {
 			console.log(error);
 		}).then(function () {
-			
+
 		});
-		
+
 		var zip = document.getElementById("playerZipCode").value;
 		var address = document.getElementById("playerAddress").value;
 		var city = document.getElementById("playerCity").value;
 		var state = document.getElementById("playerState").value;
 		placeIconAtAddress(zip, address, city, state, 'img/home-icon-black.png', 'Home', '', true);
 	};
-	
+
 	window.onresize = function()
 	{
 		setTimeout( function() { map.updateSize();}, 200);
@@ -196,13 +201,13 @@
 		overlayBg.style.display = "block";
 	  }
 	}
-	
+
 	// Close the sidebar with the close button
 	function w3_close() {
 	  mySidebar.style.display = "none";
 	  overlayBg.style.display = "none";
 	}
-	
+
 	function placeIconAtAddress(zip, address, city, state, iconSrc, type, data, setFocus)
 	{
 		var homePoint = null;
@@ -217,7 +222,7 @@
 				var coordinates = response["data"]["features"][0]["geometry"]["coordinates"];
 				var longitude = coordinates[0];
 				var latitude = coordinates[1];
-				
+
 				if(setFocus)
 				{
 					map.setView(new ol.View({
@@ -225,24 +230,24 @@
 						zoom: 13
 					}));
 				}
-				
+
 				var iconStyle = new ol.style.Style({
 					image: new ol.style.Icon({
 						src: iconSrc,
 						scale: .5
 					})
 				});
-				
+
 				homePoint = new ol.Feature({
 					geometry: new ol.geom.Point(
 						ol.proj.fromLonLat([longitude, latitude])
 					),
 				});
-				
+
 				homePoint.setStyle(iconStyle);
-				
+
 				vectorSource.addFeature(homePoint);
-				
+
 				homePoint.set('type', type);
 				homePoint.set('pointData', data);
 				return homePoint;
@@ -254,7 +259,7 @@
 		});
 		return homePoint;
 	}
-	
+
 	function setInteractionMode(mode)
 	{
 		var interactionButton = document.getElementById("pointInteractionButton");
@@ -277,7 +282,7 @@
 			interactionButton.textContent = "";
 		}
 	}
-	
+
 	function addFriend()
 	{
 		axios({
@@ -288,9 +293,9 @@
 		}});
 		setInteractionMode("Remove Friend");
 	}
-	
+
 	function removeFriend()
-	{	
+	{
 		axios({
 		  method: 'put',
 		  url: '/removeFriend',
@@ -300,3 +305,14 @@
 		setInteractionMode("Add Friend");
 	}
 </script>
+
+<style>
+.logo-img{
+  position:absolute;
+  left:0;
+  top:25px;
+  width: 100%;
+  height: auto;
+  z-index: 800;
+}
+</style>

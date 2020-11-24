@@ -15,7 +15,11 @@
     </head>
     <body style="height: 100%; overflow-y: hidden !important;">
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
-				<a href="/search">
+
+        <a href="#">
+          <img src="img/SpringSports.png" alt="Spring Sports" class="logo-img"></a>
+
+        <a href="/search">
 				<div class="menuItem">
 					<img src="img/search-icon.png" alt="" class="center">
 				</div>
@@ -41,16 +45,16 @@
 					<div style="width: 30%; height: 100%; float: left; margin-top: 5%; margin-left: 10px;">
 						<div style="text-align:center; width: 100%; height: 100%; background-color: rgba(50, 50, 50, .5);">
 							<div id="threadList" style="width: 100%; height: 80vh; overflow-y: scroll; overflow-x: hidden; color: white; float: left; font-weight: bold; font-size: 32pt;">
-								
+
 							</div>
 						</div>
 					</div>
 					<div  id="threadPanel" style="width:60%; height: 100%; float: left; margin-top: 5%; margin-left: 10px;">
 						<div id="threadName" style="color: white; text-align: center; font-size: 24pt; border: 1px solid black; background-color: #2e2e2e">
-						
+
 						</div>
 						<div id="currentThread" style="height: 80vh; overflow-y: scroll; min-height: 10%; position: relative; border: 1px solid #636363; background-color: rgba(82, 82, 82, .75);">
-				
+
 						</div>
 						<div style="display: table; clear: both; width: 100%; margin-top: 5px;">
 							<input id="messageInput" style="color: white; width: 87.5%;border: 1px solid #636363; background-color: rgba(82, 82, 82, .75); height: 10%;" placeholder="Write a message here..."></input>
@@ -68,21 +72,21 @@
 	var usernameToName = { };
 
 	window.onload = function ()
-	{	
+	{
 		document.getElementById("threadPanel").style.display = "none";
 		window.setInterval(function() {updateOpenThread()}, 1000);
 		messageInput = document.getElementById("messageInput");
-		
+
 		messageInput.addEventListener("keyup", function(event) {
 		  if (event.keyCode === 13) {
 			event.preventDefault();
 			document.getElementById("messageSendButton").click();
 		  }
 		});
-		
-		axios.get('/getUserFriends', 
-		{ 
-			params: { 
+
+		axios.get('/getUserFriends',
+		{
+			params: {
 				username: Cookies.get('username')
 			}}).then(function (response) {
 				var threadList = document.getElementById("threadList");
@@ -91,15 +95,15 @@
 					console.log(friendship);
 					var friendUsername = friendship["username"];
 					usernameToName[friendship["username"]] = friendship["firstName"] + " " + friendship["lastName"];
-					threadList.innerHTML += "<div id=\"" + friendUsername + "\" class='friendListEntry' onclick=\"openThread(\'" + friendUsername + "\')\"><div style='padding: 10px;  width: 80%;'><div>" + friendship["firstName"] 
-									+ " " + friendship["lastName"] 
-									+ "</div><div style='color: #bdbdbd; font-size: 20pt; margin-right: 10px;'>(@" + friendship["username"] 
+					threadList.innerHTML += "<div id=\"" + friendUsername + "\" class='friendListEntry' onclick=\"openThread(\'" + friendUsername + "\')\"><div style='padding: 10px;  width: 80%;'><div>" + friendship["firstName"]
+									+ " " + friendship["lastName"]
+									+ "</div><div style='color: #bdbdbd; font-size: 20pt; margin-right: 10px;'>(@" + friendship["username"]
 									+ ")</div></div></div>"
 				});
 			}).catch(function (error) {
 				console.log(error);
 			}).then(function () {
-				
+
 			});
 	}
 
@@ -107,28 +111,28 @@
 	{
 		document.getElementById("threadPanel").style.display = "block";
 		var lastSelectedElement = document.getElementById(currentThread);
-		
+
 		if(lastSelectedElement != null && lastSelectedElement != undefined)
 			lastSelectedElement.style.backgroundColor = "rgba(82, 82, 82, .75)";
-			
+
 		currentThread = username;
 		document.getElementById(username).style.backgroundColor = "#262626";
 		updateOpenThread(true);
 	}
-	
+
 	function updateOpenThread(forceUpdate = false)
 	{
 		if(currentThread == null || currentThread == "")
 			return;
-			
+
 		var threadElement = document.getElementById("currentThread");
 		var threadInnerHTML = "";
-		axios.get('/viewMessageThread', 
-		{ 
-			params: { 
+		axios.get('/viewMessageThread',
+		{
+			params: {
 				otherUser: currentThread,
 		}}).then(function (response) {
-		
+
 			// Loop through all messages received
 			response["data"].forEach(function(message) {
 				// Change color and side of the message box depending on if the current user is the sender or receiver
@@ -140,10 +144,10 @@
 					floatStyle = "right";
 					color = "#4370d1";
 				}
-				
+
 				threadInnerHTML += "<div class=\"message\" style=\"background-color: " + color + "; float: " + floatStyle + "\">" + message["text"] + "</div>";
 			});
-			
+
 			// Don't update the html if there are no new messages
 			if(prevThreadContents != threadInnerHTML || forceUpdate == true)
 			{
@@ -151,19 +155,19 @@
 				threadElement.scrollTop = threadElement.scrollHeight;
 				document.getElementById("threadName").innerHTML = usernameToName[currentThread] + " (@" + currentThread + ")";
 			}
-			
+
 			prevThreadContents = threadInnerHTML;
 		}).catch(function (error) {
 			console.log(error);
 		}).then(function () {
-							
+
 		});
 	}
-	
+
 	function sendMessage()
 	{
 		var textToSend = messageInput.value;
-		
+
 		if(textToSend != "")
 		{
 			messageInput.value = "";
@@ -209,5 +213,14 @@
 	margin: 10px;
 	margin-top: 5px;
 	clear: both;
+}
+
+.logo-img{
+  position:absolute;
+  left:0;
+  top:25px;
+  width: 100%;
+  height: auto;
+  z-index: 800;
 }
 </style>

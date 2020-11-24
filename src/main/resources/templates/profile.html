@@ -15,27 +15,35 @@
     </head>
     <body style="height: 100%;">
 			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
+
+        <a href="#">
+          <img src="img/SpringSports.png" alt="Spring Sports" class="logo-img"></a>
+
 				<a href="/search">
 				<div class="menuItem">
 					<img src="img/search-icon.png" alt="" class="center">
 				</div>
 				</a>
+
 				<a href="/getPlayer">
 				<div class="menuItem selected">
 					<img src="img/account-icon.png" alt="" class="center">
 				</div>
 				</a>
+
 				<a href="/map">
 				<div class="menuItem">
 					<img src="img/map-icon.png" alt="" class="center">
 				</div>
 				</a>
+
 				<a href="/messages">
 				<div class="menuItem">
 					<img src="img/messages-icon.png" alt="" class="center">
 				</div>
 				</a>
-			</div>
+      </div>
+
 			<div style="width:90%; margin-left: 10%;">
 				<div class="center" style="top: 5% !important; text-align:center;">
 					<div class="center" style="border-radius: 50%; border: 4px solid black; width: 200px; height: 200px;">
@@ -57,7 +65,7 @@
 						<div style="margin-top: 10px; width: 90%;">
 							<div style="float: left; clear: left; margin-top: 10px;">Friends</div>
 							<div id="friendsList" style="padding: 2.5%; clear: left; background-color: rgba(75, 75, 75, .75); width: 90%; border: 1px solid #636363; min-height: 100px;">
-								
+
 							</div>
 						</div>
 					</div>
@@ -68,27 +76,27 @@
 <script>
 	window.onload = function ()
 	{
-		axios.get('/getUserFriends', 
-		{ 
-			params: { 
+		axios.get('/getUserFriends',
+		{
+			params: {
 				username: Cookies.get('username')
 			}}).then(function (response) {
 				console.log(response["data"]);
-				
+
 				var friendsList = document.getElementById("friendsList");
 				friendsList.innerHTML = "";
 				response["data"].forEach(function(friendship) {
-					friendsList.innerHTML += "<div class='friendListEntry'><div style='margin-right: 10px;'>" + friendship["firstName"] 
-									+ " " + friendship["lastName"] 
-									+ "</div><div style='color: #bdbdbd; font-size: 24pt; margin-right: 10px;'>(@" + friendship["username"] 
+					friendsList.innerHTML += "<div class='friendListEntry'><div style='margin-right: 10px;'>" + friendship["firstName"]
+									+ " " + friendship["lastName"]
+									+ "</div><div style='color: #bdbdbd; font-size: 24pt; margin-right: 10px;'>(@" + friendship["username"]
 									+ ")</div><button style='margin-top: 10px; width: 15%; height: 30pt; background-color: rgba(227, 61, 0, 1);' onclick='removeFriend()'>Remove Friend</button></div>"
 				});
 			}).catch(function (error) {
 				console.log(error);
 			}).then(function () {
-				
+
 			});
-		
+
 	}
 
 	function enableBioEdit()
@@ -97,13 +105,13 @@
 		document.getElementById("editButton").style.display = "none";
 		document.getElementById("bioInput").disabled = false;
 	}
-	
+
 	function submitBio()
 	{
 		document.getElementById("doneEditingButton").style.display = "none";
 		document.getElementById("editButton").style.display = "block";
 		document.getElementById("bioInput").disabled = true;
-		
+
 		axios({
 		  method: 'put',
 		  url: '/updateBio',
@@ -113,6 +121,14 @@
 	}
 </script>
 <style>
+.logo-img{
+  position:absolute;
+  left:0;
+  top:25px;
+  width: 100%;
+  height: auto;
+  z-index: 800;
+}
 .friendListEntry {
 	text-align: left;
 	display: flex;

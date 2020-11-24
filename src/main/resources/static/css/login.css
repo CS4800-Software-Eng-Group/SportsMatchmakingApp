@@ -10,6 +10,7 @@ body, html {
 .login-img {
     /* The image used */
     background-image: url('../img/basketball.jpg');
+    -webkit-filter: blur(4px);
 
     /*Control the the height of the image*/
     height: 100%;
@@ -25,17 +26,34 @@ body, html {
 
 /* Add styles to form the container */
 .container {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.8); /* Black w/opacity/see-through */
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin: -150px 0 0 -150px;
-    width:300px;
-    height:400px;
-    padding: 16px;
-    opacity: 0.8;
-    background-color: lightslategray;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 25%;
+    padding: 20px;
+    text-align: center;
 }
 
+.responsive{
+  max-width: 100%;
+  height: auto;
+}
+
+/*
+img {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+}
+*/
 /*Full-width input fields */
 input[type=text], input[type=password]{
     width: 100%;
