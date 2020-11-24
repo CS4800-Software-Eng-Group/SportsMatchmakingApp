@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +44,9 @@ public class PlayerController {
 		
 	@Autowired
 	FriendshipRepository friendshipRepo;
+	
+	@Autowired
+	MessageRepository messageRepo;
 	
 	@EventListener(ApplicationReadyEvent.class)
 	public void doSomethingAfterStartup() {
@@ -99,6 +104,27 @@ public class PlayerController {
 		return mv;
 	}
 	
+	@RequestMapping("/messages")
+	public ModelAndView getMessages(@CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
+	{
+		ModelAndView mv = new ModelAndView("messages");
+		Player 	player = playerRepo.findByUsernameAndPassword(username, password);
+		if(player != null)
+		{
+			mv.addObject("player", player);
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value = "/viewMessageThread", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<Message> getMessageThread(@CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password, @RequestParam String otherUser)
+	{
+		return messageRepo.findMessagesWithUserPair(username, otherUser);
+	}
+	
 	@RequestMapping(value = "/checkFriendshipByUsernames", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Boolean checkFriendshipByUsernames(@RequestParam String firstUser, @RequestParam String secondUser)
@@ -122,6 +148,7 @@ public class PlayerController {
 		
 		List<Player> userFriends = new ArrayList<Player>();
 		
+		System.out.println("Getting friends for: " + username);
 		if(user != null)
 		{
 			List<Friendship> friendships =  friendshipRepo.findFriendshipById(user.getUsername());
@@ -138,6 +165,7 @@ public class PlayerController {
 			}
 		}
 		
+		System.out.println("Returning list of " + userFriends.size() + " friends");
 		return userFriends;
 	}
 	
@@ -155,6 +183,18 @@ public class PlayerController {
 			player.setBio(bio);
 			playerRepo.save(player);
 		}
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
+	@PutMapping("/sendMessage")
+	public	 @ResponseBody ResponseEntity<String> sendMessage(@RequestBody String body, @CookieValue(value = "username", defaultValue = "") String username,
+			@CookieValue(value = "password", defaultValue = "") String password)
+	{
+		Map<String, Object> params = jsonParser.parseMap(body);
+		String otherUser = (String) params.get("otherUser");
+		String messageText = (String) params.get("message");
+		Message newMessage = new Message(username, otherUser, messageText, new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()));
+		messageRepo.save(newMessage);
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	

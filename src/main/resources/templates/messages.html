@@ -13,52 +13,201 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 		<link rel="stylesheet" href="css/main.css">
     </head>
-    <body style="height: 100%;">
-        <div class="b-yellow row" style="height: 100vh">
-			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150);">
-				<form action="search" class="menuItem" name="login" onsubmit="return searchForm()" method="POST"><br>
-					<input type="text" name="username" id="searchUser" style="display: none;"/>
-					<input type="text" name="password" id="searchPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/search-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="" class="menuItem selected" name="login" onsubmit="return profileForm()" method="POST"><br>
-					<input type="text" name="username" id="mapUser" style="display: none;"/>
-					<input type="text" name="password" id="mapPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/account-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="map" class="menuItem" name="login" onsubmit="return mapForm()" method="POST"><br>
-					<input type="text" name="username" id="profileUser" style="display: none;"/>
-					<input type="text" name="password" id="profilePass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/map-icon.png" alt="" class="center">
-					</button>
-				</form>
-				<form action="messages" class="menuItem" name="login" onsubmit="return messagesForm()" method="POST"><br>
-					<input type="text" name="username" id="messagesUser" style="display: none;"/>
-					<input type="text" name="password" id="messagesPass" style="display: none;"/>
-					<button type="submit">
-					  <img src="img/messages-icon.png" alt="" class="center">
-					</button>
-				</form>
-			</div>
-			<div style="width:100%;">
-				<div class="center" style="top: 5% !important; text-align:center;">
-					<div class="center" style="border-radius: 50%; border: 4px solid black; width: 200px; height: 200px;">
-						<img src="img/test.png" class="circleImage" style=" width: 100%;">
-					</div>
-					<div style="color: white; font-weight: bold; font-size: 42pt;"><div th:text="${player.firstName + ' ' + player.lastName}"/></div>
+    <body style="height: 100%; overflow-y: hidden !important;">
+			<div style="width:10%; height: 100%; padding-top: 5%; background-color: rgba(20, 20, 20, 150); position: fixed;">
+				<a href="/search">
+				<div class="menuItem">
+					<img src="img/search-icon.png" alt="" class="center">
 				</div>
-				<div class="center" style="top: 5% !important; margin-top: 5px; text-align:center; width: 100%; height: 80%; background-color: rgba(50, 50, 50, .5);">
-					<div style="color: white; float: left; padding: 25px; font-weight: bold; font-size: 32pt;">
-						Bio
-						<tr th:text="${player.bio}">
+				</a>
+				<a href="/getPlayer">
+				<div class="menuItem">
+					<img src="img/account-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/map">
+				<div class="menuItem">
+					<img src="img/map-icon.png" alt="" class="center">
+				</div>
+				</a>
+				<a href="/messages">
+				<div class="menuItem selected">
+					<img src="img/messages-icon.png" alt="" class="center">
+				</div>
+				</a>
+			</div>
+			<div style="width: 90%; height: 100%; margin-left: 10%;">
+				<div style="width: 100%; height: 80%; display: table; clear: both; content: \"\"">
+					<div style="width: 30%; height: 100%; float: left; margin-top: 5%; margin-left: 10px;">
+						<div style="text-align:center; width: 100%; height: 100%; background-color: rgba(50, 50, 50, .5);">
+							<div id="threadList" style="width: 100%; height: 80vh; overflow-y: scroll; overflow-x: hidden; color: white; float: left; font-weight: bold; font-size: 32pt;">
+								
+							</div>
+						</div>
+					</div>
+					<div  id="threadPanel" style="width:60%; height: 100%; float: left; margin-top: 5%; margin-left: 10px;">
+						<div id="threadName" style="color: white; text-align: center; font-size: 24pt; border: 1px solid black; background-color: #2e2e2e">
+						
+						</div>
+						<div id="currentThread" style="height: 80vh; overflow-y: scroll; min-height: 10%; position: relative; border: 1px solid #636363; background-color: rgba(82, 82, 82, .75);">
+				
+						</div>
+						<div style="display: table; clear: both; width: 100%; margin-top: 5px;">
+							<input id="messageInput" style="color: white; width: 87.5%;border: 1px solid #636363; background-color: rgba(82, 82, 82, .75); height: 10%;" placeholder="Write a message here..."></input>
+							<button id="messageSendButton" style="margin-rigth: 10px; width: 10%; float: right; background-color: #4287f5; height: 10%; padding: 2px !important;" onclick="sendMessage()">Send</button>
+						</div>
 					</div>
 				</div>
 			</div>
-        </div>
     </body>
 </html>
+<script>
+	var currentThread;
+	var messageInput;
+	var prevThreadContents;
+	var usernameToName = { };
+
+	window.onload = function ()
+	{	
+		document.getElementById("threadPanel").style.display = "none";
+		window.setInterval(function() {updateOpenThread()}, 1000);
+		messageInput = document.getElementById("messageInput");
+		
+		messageInput.addEventListener("keyup", function(event) {
+		  if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("messageSendButton").click();
+		  }
+		});
+		
+		axios.get('/getUserFriends', 
+		{ 
+			params: { 
+				username: Cookies.get('username')
+			}}).then(function (response) {
+				var threadList = document.getElementById("threadList");
+				threadList.innerHTML = "";
+				response["data"].forEach(function(friendship) {
+					console.log(friendship);
+					var friendUsername = friendship["username"];
+					usernameToName[friendship["username"]] = friendship["firstName"] + " " + friendship["lastName"];
+					threadList.innerHTML += "<div id=\"" + friendUsername + "\" class='friendListEntry' onclick=\"openThread(\'" + friendUsername + "\')\"><div style='padding: 10px;  width: 80%;'><div>" + friendship["firstName"] 
+									+ " " + friendship["lastName"] 
+									+ "</div><div style='color: #bdbdbd; font-size: 20pt; margin-right: 10px;'>(@" + friendship["username"] 
+									+ ")</div></div></div>"
+				});
+			}).catch(function (error) {
+				console.log(error);
+			}).then(function () {
+				
+			});
+	}
+
+	function openThread(username)
+	{
+		document.getElementById("threadPanel").style.display = "block";
+		var lastSelectedElement = document.getElementById(currentThread);
+		
+		if(lastSelectedElement != null && lastSelectedElement != undefined)
+			lastSelectedElement.style.backgroundColor = "rgba(82, 82, 82, .75)";
+			
+		currentThread = username;
+		document.getElementById(username).style.backgroundColor = "#262626";
+		updateOpenThread(true);
+	}
+	
+	function updateOpenThread(forceUpdate = false)
+	{
+		if(currentThread == null || currentThread == "")
+			return;
+			
+		var threadElement = document.getElementById("currentThread");
+		var threadInnerHTML = "";
+		axios.get('/viewMessageThread', 
+		{ 
+			params: { 
+				otherUser: currentThread,
+		}}).then(function (response) {
+		
+			// Loop through all messages received
+			response["data"].forEach(function(message) {
+				// Change color and side of the message box depending on if the current user is the sender or receiver
+				var floatStyle = "left";
+				var color = "#e3e3e3";
+				// If the logged in user is the sender
+				if(currentThread != message["sender"])
+				{
+					floatStyle = "right";
+					color = "#4370d1";
+				}
+				
+				threadInnerHTML += "<div class=\"message\" style=\"background-color: " + color + "; float: " + floatStyle + "\">" + message["text"] + "</div>";
+			});
+			
+			// Don't update the html if there are no new messages
+			if(prevThreadContents != threadInnerHTML || forceUpdate == true)
+			{
+				threadElement.innerHTML = threadInnerHTML;
+				threadElement.scrollTop = threadElement.scrollHeight;
+				document.getElementById("threadName").innerHTML = usernameToName[currentThread] + " (@" + currentThread + ")";
+			}
+			
+			prevThreadContents = threadInnerHTML;
+		}).catch(function (error) {
+			console.log(error);
+		}).then(function () {
+							
+		});
+	}
+	
+	function sendMessage()
+	{
+		var textToSend = messageInput.value;
+		
+		if(textToSend != "")
+		{
+			messageInput.value = "";
+			axios({
+				method: 'put',
+				url: '/sendMessage',
+				data: {
+					otherUser: currentThread,
+					message: textToSend
+			}}).then(function() {
+				updateOpenThread();
+			});
+		}
+	}
+</script>
+<style>
+.friendListEntry {
+	text-align: left;
+	display: flex;
+	background-color: rgba(82, 82, 82, .75);
+	border: 1px solid #636363;
+	border-color: black;
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 24pt;
+	clear: both;
+	height: 10vh;
+	padding: 10px;
+}
+
+.friendListEntry:hover {
+	cursor: pointer;
+}
+
+.message {
+	display: inline-block;
+	min-height: 2ex;
+	min-width: 10%;
+	border-radius: 25%;
+	height: auto;
+	width: auto;
+	padding: 5px;
+	margin: 10px;
+	margin-top: 5px;
+	clear: both;
+}
+</style>
